@@ -1,0 +1,15 @@
+/home/anandi/Dokumen/Papb/papb_aplication/build/linux/x64/debug/bundle/papb_aplication
+/home/anandi/Dokumen/Papb/papb_aplication/build/linux/x64/debug/bundle/data/icudtl.dat
+/home/anandi/Dokumen/Papb/papb_aplication/build/linux/x64/debug/bundle/lib/libflutter_linux_gtk.so
+/home/anandi/Dokumen/Papb/papb_aplication/build/linux/x64/debug/bundle/data/flutter_assets/NOTICES.Z
+/home/anandi/Dokumen/Papb/papb_aplication/build/linux/x64/debug/bundle/data/flutter_assets/fonts/MaterialIcons-Regular.otf
+/home/anandi/Dokumen/Papb/papb_aplication/build/linux/x64/debug/bundle/data/flutter_assets/FontManifest.json
+/home/anandi/Dokumen/Papb/papb_aplication/build/linux/x64/debug/bundle/data/flutter_assets/kernel_blob.bin
+/home/anandi/Dokumen/Papb/papb_aplication/build/linux/x64/debug/bundle/data/flutter_assets/packages/cupertino_icons/assets/CupertinoIcons.ttf
+/home/anandi/Dokumen/Papb/papb_aplication/build/linux/x64/debug/bundle/data/flutter_assets/AssetManifest.json
+/home/anandi/Dokumen/Papb/papb_aplication/build/linux/x64/debug/bundle/data/flutter_assets/version.json
+/home/anandi/Dokumen/Papb/papb_aplication/build/linux/x64/debug/bundle/data/flutter_assets/shaders/ink_sparkle.frag
+/home/anandi/Dokumen/Papb/papb_aplication/build/linux/x64/debug/bundle/data/flutter_assets/assets/flag/2.png
+/home/anandi/Dokumen/Papb/papb_aplication/build/linux/x64/debug/bundle/data/flutter_assets/assets/image/Epl.png
+/home/anandi/Dokumen/Papb/papb_aplication/build/linux/x64/debug/bundle/data/flutter_assets/assets/image/Odegard.png
+/home/anandi/Dokumen/Papb/papb_aplication/build/linux/x64/debug/bundle/data/flutter_assets/AssetManifest.bin
