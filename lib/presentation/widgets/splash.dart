@@ -8,7 +8,7 @@ class SplashScreen extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        backgroundColor: const Color(0xFFD21312),
+        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
         body: Center(
           child: Align(
             alignment: Alignment.center,
@@ -34,12 +34,18 @@ class SplashScreen extends StatelessWidget {
                 const SizedBox(height: 20),
                 const Text(
                   "NaSport",
-                  style: TextStyle(fontSize: 52, color: Colors.white, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      fontSize: 52,
+                      color: Color.fromARGB(255, 172, 4, 4),
+                      fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 10),
                 const Text(
                   "Football Match Results and Standings Information",
-                  style: TextStyle(fontSize: 22, color: Colors.white, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      fontSize: 22,
+                      color: Color.fromARGB(255, 172, 4, 4),
+                      fontWeight: FontWeight.bold),
                   textAlign: TextAlign.center,
                 ),
               ],
