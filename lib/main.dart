@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:papb_aplication/presentation/page/Homescreen/views/homescreen.dart'; // Ganti dengan path yang sesuai
 import 'package:papb_aplication/presentation/widgets/splash.dart';
-// import 'presentation/page/homepage/views/homepage.dart';
 
 void main() {
   runApp(MyApp());
@@ -34,5 +33,6 @@ class SplashScreenBuilder extends StatelessWidget {
         }
       },
     );
+    
   }
 }

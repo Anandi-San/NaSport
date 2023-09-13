@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:papb_aplication/presentation/page/Homescreen/views/homescreen.dart';
+import 'package:papb_aplication/presentation/page/Line_Up/page/lineup.dart';
+
 
 class MatchDetailPage extends StatefulWidget {
   const MatchDetailPage({Key? key}) : super(key: key);
@@ -27,33 +30,41 @@ class _MatchDetailState extends State<MatchDetailPage> {
             ),
           ),
           const SizedBox(height: 20),
-          const Row(
-            children: [
-              Padding(
-                padding: EdgeInsets.only(left: 10.0),
-                child: Icon(Icons.arrow_back, color: Colors.white, size: 30),
-              ),
-              Expanded(
-                child: Text(
-                  "English Premier League",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 22,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
+          Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 10.0),
+                  child: IconButton(
+                    onPressed: () {
+                      Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(builder: (context) => HomeScreen()),
+                        (route) => false,
+                      );
+                    },
+                    icon: const Icon(Icons.arrow_back, color: Colors.white, size: 30),
                   ),
                 ),
-              ),
-            ],
-          ),
+                const Expanded(
+                  child: Text(
+                    "English Premier League",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 22,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           const SizedBox(width: 30),
           Row(
             children: [
-              _buildTeamLogo(),
+              _buildTeamLogo1(),
               const SizedBox(width: 16),
               _buildFullTimeScore(),
               const SizedBox(width: 16),
-              _buildTeamLogo(),
+              _buildTeamLogo2(), // ini yang buat 2
             ],
           ),
           const SizedBox(height: 20),
@@ -63,7 +74,7 @@ class _MatchDetailState extends State<MatchDetailPage> {
     );
   }
 
-  Widget _buildTeamLogo() {
+  Widget _buildTeamLogo1() {
     return Container(
       width: 150,
       height: 150,
@@ -103,7 +114,7 @@ class _MatchDetailState extends State<MatchDetailPage> {
             ),
           ),
           Text(
-            "8 - 2",
+            "3 - 1",
             style: TextStyle(
               color: Colors.white,
               fontSize: 45,
@@ -114,6 +125,33 @@ class _MatchDetailState extends State<MatchDetailPage> {
       ),
     );
   }
+
+  Widget _buildTeamLogo2() {
+    return Container(
+      width: 150,
+      height: 150,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          Container(
+            width: 100,
+            height: 100,
+            decoration: BoxDecoration(
+              color: const Color(0xFF070A52),
+              borderRadius: BorderRadius.circular(16.0),
+            ),
+          ),
+          Image.asset(
+            "assets/flag/mu1.png",
+            width: 140,
+            height: 140,
+            fit: BoxFit.contain,
+          ),
+        ],
+      ),
+    );
+  }
+
 
   Widget _buildButtonRow() {
     return Row(
@@ -140,7 +178,10 @@ class _MatchDetailState extends State<MatchDetailPage> {
         const SizedBox(width: 8),
         ElevatedButton(
           onPressed: () {
-            // Aksi yang diambil saat tombol "Line Ups" ditekan
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const LineUp()), // Ganti dengan nama kelas LineUp yang sesuai
+            );
           },
           style: ElevatedButton.styleFrom(
             minimumSize: const Size(150, 60),
@@ -150,12 +191,12 @@ class _MatchDetailState extends State<MatchDetailPage> {
             ),
           ),
           child: const Text(
-            "Line Ups",
+            "Line Up",
             style: TextStyle(
               fontSize: 18,
             ),
           ),
-        ),
+        )
       ],
     );
   }
