@@ -1,7 +1,10 @@
+// import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:papb_aplication/presentation/page/MatchDetail/matchdetail.dart';
 import 'package:papb_aplication/presentation/widgets/bottombar.dart';
-import 'package:http/http.dart' as http;
+
+// Import yang diperlukan di atas
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -13,8 +16,39 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
 
+  List<Map<String, dynamic>> klasemenData = [
+    {
+      "team": "Arsenal",
+      "gambar": "assets/flag/arsenal.png",
+      "mp": 10,
+      "w": 5,
+      "d": 3,
+      "l": 2,
+      "pts": 18,
+      "gf": 20,
+      "ga": 12,
+      "gd": 8,
+    },
+    {
+      "team": "Liverpool",
+      "gambar": "assets/flag/arsenal.png",
+      "mp": 10,
+      "w": 6,
+      "d": 2,
+      "l": 2,
+      "pts": 20,
+      "gf": 22,
+      "ga": 10,
+      "gd": 12,
+    },
+  ];
+
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
+
     return Scaffold(
       backgroundColor: const Color(0xFFD21312),
       body: Column(
@@ -32,10 +66,13 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 15),
+            padding: const EdgeInsets.only(top: 10),
             child: Align(
               alignment: Alignment.center,
-              child: Image.asset("assets/image/Epl.png"),
+              child: Image.asset(
+                "assets/image/Epl.png",
+              width: screenWidth * 8.0,
+              height: screenHeight * 0.2),
             ),
           ),
           Padding(
@@ -59,45 +96,107 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           const SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
+          Container(
+            height: 160,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: 10,
+              itemBuilder: (context, index) {
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const MatchDetailPage()));
-                },
-                child: Container(
-                  width: 132,
-                  height: 132,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFF15A59),
-                    borderRadius: BorderRadius.circular(10),
+                        builder: (context) => const MatchDetailPage(),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    width: 132,
+                    height: 132,
+                    margin: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFF15A59),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Column(
+                      children: [
+                        const Text(
+                          "Regular Season",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16.0,
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset("assets/flag/arsenal.png",
+                                width: 45, height: 45),
+                            const SizedBox(width: 10),
+                            const Text(
+                              "VS",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            Image.asset("assets/flag/arsenal.png",
+                                width: 45, height: 45),
+                          ],
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.only(left: 8.0, top: 8.0, right: 8.0),
+                          child: Row(
+                            children: [
+                              Text(
+                                "Arsenal",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                ),
+                              ),
+                              Spacer(),
+                              Text(
+                                "7",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.only(left: 8.0, right: 8.0, top: 5.0),
+                          child: Row(
+                            children: [
+                              Text(
+                                "Arsenal",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                ),
+                              ),
+                              Spacer(),
+                              Text(
+                                "8",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
                   ),
-                  child: const Center(child: Text("Kotak 1")),
-                ),
-              ),
-              Container(
-                width: 132,
-                height: 132,
-                decoration: BoxDecoration(
-                  color: const Color(0xFFF15A59),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: const Center(child: Text("Kotak 2")),
-              ),
-              Container(
-                width: 132,
-                height: 132,
-                decoration: BoxDecoration(
-                  color: const Color(0xFFF15A59),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: const Center(child: Text("Kotak 3")),
-              ),
-            ],
+                );
+              },
+            ),
           ),
           const SizedBox(height: 10),
           Row(
@@ -115,11 +214,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "English premier League",
+                    "English Premier League",
                     style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold),
+                      fontSize: 18,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   Text(
                     "2023/2024",
@@ -134,32 +234,110 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           const SizedBox(height: 10),
           Padding(
-            padding:
-                const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
+            padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
             child: Container(
-                width: double.infinity,
-                height: 200, // blm
-                decoration: BoxDecoration(
-                  color: const Color(0xFF070A52),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: const Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(top: 10.0, left: 15.0),
-                      child: Text("Team",
-                          style: TextStyle(fontSize: 16, color: Colors.white)),
+              width: double.infinity,
+              height: 200,
+              decoration: BoxDecoration(
+                color: const Color(0xFF070A52),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Row(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(left: 16.0),
+                        child: Text(
+                          "Team",
+                          style: TextStyle(fontSize: 16, color: Colors.white),
+                        ),
+                      ),
+                      Spacer(),
+                      Text(
+                        "MP",
+                        style: TextStyle(fontSize: 16, color: Colors.white),
+                      ),
+                      SizedBox(width: 10),
+                      Text(
+                        "W",
+                        style: TextStyle(fontSize: 16, color: Colors.white),
+                      ),
+                      SizedBox(width: 10),
+                      Text(
+                        "D",
+                        style: TextStyle(fontSize: 16, color: Colors.white),
+                      ),
+                      SizedBox(width: 10),
+                      Text(
+                        "L",
+                        style: TextStyle(fontSize: 16, color: Colors.white),
+                      ),
+                      SizedBox(width: 10),
+                      Text(
+                        "PTS",
+                        style: TextStyle(fontSize: 16, color: Colors.white),
+                      ),
+                      SizedBox(width: 10),
+                    ],
+                  ),
+                  const SizedBox(height: 5),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: klasemenData.length, // Menggunakan semua data tim
+                      itemBuilder: (context, index) {
+                        final data = klasemenData[index];
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: Row(
+                            children: [
+                              // Logo tim
+                              Image.asset(
+                                data["gambar"],
+                                width: 30,
+                                height: 30,
+                              ),
+                              const SizedBox(width: 10),
+                              Text(
+                                data["team"],
+                                style: const TextStyle(fontSize: 16, color: Colors.white),
+                              ),
+                              const Spacer(),
+                              Text(
+                                data["mp"].toString(),
+                                style: const TextStyle(fontSize: 16, color: Colors.white),
+                              ),
+                              const SizedBox(width: 18),
+                              Text(
+                                data["w"].toString(),
+                                style: const TextStyle(fontSize: 16, color: Colors.white),
+                              ),
+                              const SizedBox(width: 15),
+                              Text(
+                                data["d"].toString(),
+                                style: const TextStyle(fontSize: 16, color: Colors.white),
+                              ),
+                              const SizedBox(width: 10),
+                              Text(
+                                data["l"].toString(),
+                                style: const TextStyle(fontSize: 16, color: Colors.white),
+                              ),
+                              const SizedBox(width: 17),
+                              Text(
+                                data["pts"].toString(),
+                                style: const TextStyle(fontSize: 16, color: Colors.white),
+                              ),
+                              const SizedBox(width: 14),
+                            ],
+                          ),
+                        );
+                      },
                     ),
-                    Spacer(),
-                    Padding(
-                      padding:
-                          EdgeInsets.only(top: 10.0, left: 10.0, right: 15),
-                      child: Text("MP   W   D   L   PTS   GF   GA   GD",
-                          style: TextStyle(fontSize: 16, color: Colors.white)),
-                    )
-                  ],
-                )),
+                  ),
+                ],
+              ),
+            ),
           ),
         ],
       ),
@@ -174,3 +352,4 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
+
