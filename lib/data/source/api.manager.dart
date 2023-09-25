@@ -4,12 +4,12 @@ import 'package:http/http.dart';
 import 'package:papb_aplication/data/model/soccermodel.dart';
 
 class SoccerApi {
-  final String apiUrl = "https://v3.football.api-sports.io/fixtures?season=2022&league=39";
+  final String apiUrl =
+      "https://v3.football.api-sports.io/fixtures?season=2023&league=39";
   static const headers = {
     'x-rapidapi-host': "v3.football.api-sports.io",
     'x-rapidapi-key': "e93a90553f65e6ae949c27992ab9e7b2",
   };
-
 
   Future<List<SoccerMatch>> getAllMatches() async {
     final Uri uri = Uri.parse(apiUrl);
@@ -19,7 +19,7 @@ class SoccerApi {
     if (res.statusCode == 200) {
       body = jsonDecode(res.body);
       List<dynamic> matchesList = body['response'];
-      print("Api service: ${body}");
+      // print("Api service: ${body}");
       List<SoccerMatch> matches = matchesList
           .map((dynamic item) => SoccerMatch.fromJson(item))
           .toList();
@@ -29,4 +29,20 @@ class SoccerApi {
       return <SoccerMatch>[];
     }
   }
+
+  // Future<List<Hasil>> getDataMatches() async {
+  //   final uri = Uri.parse(apiUrl);
+
+  //   final response = await http.get(uri);
+
+  //   if (response.statusCode == 200) {
+  //     final jsonData = jsonDecode(response.body);
+
+  //     final dataHasil = DataHasil.fromJson(jsonData);
+
+  //     return dataHasil.response;
+  //   } else {
+  //     return <Hasil>[];
+  //   }
+  // }
 }

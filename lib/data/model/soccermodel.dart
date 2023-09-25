@@ -15,17 +15,18 @@ class SoccerMatch {
 }
 
 class Fixture {
-  int id;
-  int date;
-  Fixture(this.id, this.date);
+  int? id;
+  String date;
+  Status status;
+  Fixture(this.id, this.date, this.status);
 
   factory Fixture.fromJson(Map<String, dynamic> json) {
-    return Fixture(json['id'], json['date']);
+    return Fixture(json['id'], json['date'], Status.fromJson(json['status']));
   }
 }
 
 class Status {
-  int elapsedTime;
+  int? elapsedTime;
   String long;
   Status(this.elapsedTime, this.long);
 
@@ -35,20 +36,20 @@ class Status {
 }
 
 class Team {
-  int id;
+  int? id;
   String name;
   String logoUrl;
-  bool winner;
-  Team(this.id, this.name, this.logoUrl, this.winner);
+  // bool winner;
+  Team(this.id, this.name, this.logoUrl);
 
   factory Team.fromJson(Map<String, dynamic> json) {
-    return Team(json['id'], json['name'], json['logoUrl'], json['winner']);
+    return Team(json['id'], json['name'], json['logo']);
   }
 }
 
 class Goal {
-  int home;
-  int away;
+  int? home;
+  int? away;
   Goal(this.home, this.away);
 
   factory Goal.fromJson(Map<String, dynamic> json) {

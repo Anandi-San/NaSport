@@ -29,7 +29,7 @@ class SplashScreenBuilder extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const SplashScreen();
         } else {
-          return const HomeScreen(); // Halaman utama setelah SplashScreen
+          return HomeScreen(); // Halaman utama setelah SplashScreen
         }
       },
     );

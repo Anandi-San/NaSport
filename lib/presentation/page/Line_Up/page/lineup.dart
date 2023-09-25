@@ -39,7 +39,7 @@ class LineUpAppState extends State<LineUp> {
                   onPressed: () {
                     Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(
-                          builder: (context) => const HomeScreen()),
+                          builder: (context) => HomeScreen()),
                       (route) => false,
                     );
                   },
