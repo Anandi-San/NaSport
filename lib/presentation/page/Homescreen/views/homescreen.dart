@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:papb_aplication/data/model/standding.dart';
+// import 'package:papb_aplication/data/model/standding.dart';
 import 'package:papb_aplication/data/model/soccermodel.dart';
 import 'package:papb_aplication/data/source/api.manager.dart';
 import 'package:papb_aplication/data/source/standingapi.dart';
 import 'package:papb_aplication/presentation/page/MatchDetail/matchdetail.dart';
 import 'package:papb_aplication/presentation/page/standing/standing.dart';
 import 'package:papb_aplication/presentation/widgets/listklasnem.dart';
+import 'package:papb_aplication/data/model/Standingmodel.dart';
 
 class Screennn extends StatefulWidget {
   const Screennn({Key? key}) : super(key: key);
@@ -14,7 +15,6 @@ class Screennn extends StatefulWidget {
 }
 
 class HomeScreenState extends State<Screennn> {
-
   final SoccerApi soccerApi = SoccerApi();
 
   // List<SoccerMatch>? matches;
@@ -30,10 +30,10 @@ class HomeScreenState extends State<Screennn> {
 
   final StandingApi standingApi = StandingApi();
 
-  Future<List<Standing>> fetchDataStanding() async {
-    final standingData = await standingApi.getAllstanding();
-    if (standingData.isNotEmpty) {
-      return standingData;
+  Future<List<StandingModel>> fetchDataStanding() async {
+    final standingModel = await standingApi.getAllstanding();
+    if (standingModel.isNotEmpty) {
+      return standingModel;
     } else {
       return [];
     }
@@ -72,8 +72,7 @@ class HomeScreenState extends State<Screennn> {
                 child: Container(
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(
-                        10.0), 
+                    borderRadius: BorderRadius.circular(10.0),
                   ),
                   padding: const EdgeInsets.only(top: 10, right: 10, left: 10),
                   child: Align(
@@ -200,13 +199,13 @@ class HomeScreenState extends State<Screennn> {
                                               ),
                                             ),
                                             const Spacer(),
-                                              Text(
-                                                "${matches[index].goal.home ?? 0}",
-                                                style: const TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 14,
-                                                ),
+                                            Text(
+                                              "${matches[index].goal.home ?? 0}",
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 14,
                                               ),
+                                            ),
                                           ],
                                         ),
                                       ),
@@ -249,7 +248,6 @@ class HomeScreenState extends State<Screennn> {
                   ),
                 ),
               ),
-              
               const SizedBox(height: 10),
               Row(
                 children: [
@@ -295,8 +293,7 @@ class HomeScreenState extends State<Screennn> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) =>
-                                const StandingPage()), 
+                            builder: (context) => const StandingPage()),
                       );
                     },
                     child: Column(
@@ -324,9 +321,11 @@ class HomeScreenState extends State<Screennn> {
                               } else if (snapshot.hasData &&
                                   snapshot.connectionState ==
                                       ConnectionState.done) {
-                                List<Standing> standings = snapshot.data!;
+                                List<StandingModel> standings = snapshot.data!;
                                 return ListView.builder(
-                                  itemCount: standings.length >= 5 ? 5 : standings.length,
+                                  itemCount: standings.length >= 5
+                                      ? 5
+                                      : standings.length,
                                   itemBuilder: (context, index) {
                                     final standing = standings[index];
                                     return ListKlasmen(
@@ -347,7 +346,7 @@ class HomeScreenState extends State<Screennn> {
                                     "Failed to Get Data! ${snapshot.error}",
                                     style: const TextStyle(
                                       color: Colors.red,
-                                    ), 
+                                    ),
                                   ),
                                 );
                               } else {

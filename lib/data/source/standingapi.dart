@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart';
-import 'package:papb_aplication/data/model/standding.dart';
+import 'package:papb_aplication/data/model/Standingmodel.dart';
+// import 'package:papb_aplication/data/model/standding.dart';
 
 class StandingApi {
   final String apiUrl =
@@ -10,24 +11,22 @@ class StandingApi {
     'x-rapidapi-key': "e93a90553f65e6ae949c27992ab9e7b2",
   };
 
-  Future<List<Standing>> getAllstanding() async {
+  Future<List<StandingModel>> getAllstanding() async {
     final Uri uri = Uri.parse(apiUrl);
     Response res = await get(uri, headers: headers);
-    Map<String, dynamic>? body;
+    var body;
 
     if (res.statusCode == 200) {
-      body = jsonDecode(res.body) as Map<String, dynamic>?;
-
-      List<dynamic> standinglist = body?['response'] ?? [];
+      body = jsonDecode(res.body);
+      List<dynamic> standinglist = body?['response'];
       print("Api service: ${body}");
-
-      List<Standing> standing = standinglist
-          .map((dynamic item) => Standing.fromJson(item))
+      List<StandingModel> standing = standinglist
+          .map((dynamic item) => StandingModel.fromJson(item))
           .toList();
 
       return standing;
     } else {
-      return <Standing>[];
+      return <StandingModel>[];
     }
   }
 }

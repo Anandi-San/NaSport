@@ -61,6 +61,32 @@ class StandingPage extends StatelessWidget {
                 const SizedBox(width: 20),
               ],
             ),
+            SizedBox(
+              width: double.infinity,
+              child: Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // Gambar
+                    Image.asset(
+                      'assets/flag/england.png',
+                      width: 50, // Atur lebar sesuai kebutuhan Anda
+                      height: 50, // Atur tinggi sesuai kebutuhan Anda
+                    ),
+                    const SizedBox(width: 10), // Jarak antara gambar dan teks
+                    // Teks
+                    const Text(
+                      'England',
+                      style: TextStyle(
+                        fontSize: 24,
+                        color: Colors.white, // Atur ukuran font sesuai kebutuhan Anda
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
             const SizedBox(height: 20),
             Align(
               alignment: Alignment.center,
@@ -102,17 +128,20 @@ class StandingPage extends StatelessWidget {
               ),
             ),
             Container(
-              margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+              margin:
+                  const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
               width: double.infinity,
               height: 1,
               color: Colors.white,
             ),
             ListView.builder(
-              shrinkWrap: true, // Tambahkan ini agar ListView dapat berada di dalam SingleChildScrollView
+              shrinkWrap:
+                  true, // Tambahkan ini agar ListView dapat berada di dalam SingleChildScrollView
               itemCount: 20,
               itemBuilder: (context, index) {
                 return Container(
-                  margin: const EdgeInsets.symmetric(vertical: 3.0, horizontal: 10),
+                  margin:
+                      const EdgeInsets.symmetric(vertical: 3.0, horizontal: 10),
                   padding: const EdgeInsets.all(12.0),
                   decoration: BoxDecoration(
                     color: Colors.white,
