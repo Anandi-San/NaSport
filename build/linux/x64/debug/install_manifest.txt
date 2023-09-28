@@ -10,6 +10,7 @@
 /home/anandi/Dokumen/Papb/papb_aplication/build/linux/x64/debug/bundle/data/flutter_assets/version.json
 /home/anandi/Dokumen/Papb/papb_aplication/build/linux/x64/debug/bundle/data/flutter_assets/shaders/ink_sparkle.frag
 /home/anandi/Dokumen/Papb/papb_aplication/build/linux/x64/debug/bundle/data/flutter_assets/assets/flag/england.png
+/home/anandi/Dokumen/Papb/papb_aplication/build/linux/x64/debug/bundle/data/flutter_assets/assets/flag/logo.png
 /home/anandi/Dokumen/Papb/papb_aplication/build/linux/x64/debug/bundle/data/flutter_assets/assets/flag/3.png
 /home/anandi/Dokumen/Papb/papb_aplication/build/linux/x64/debug/bundle/data/flutter_assets/assets/flag/arsenal.png
 /home/anandi/Dokumen/Papb/papb_aplication/build/linux/x64/debug/bundle/data/flutter_assets/assets/flag/2.png

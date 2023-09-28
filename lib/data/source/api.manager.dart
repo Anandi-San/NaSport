@@ -9,6 +9,7 @@ class SoccerApi {
   static const headers = {
     'x-rapidapi-host': "v3.football.api-sports.io",
     'x-rapidapi-key': "e93a90553f65e6ae949c27992ab9e7b2",
+
   };
 
   Future<List<SoccerMatch>> getAllMatches() async {
@@ -29,20 +30,4 @@ class SoccerApi {
       return <SoccerMatch>[];
     }
   }
-
-  // Future<List<Hasil>> getDataMatches() async {
-  //   final uri = Uri.parse(apiUrl);
-
-  //   final response = await http.get(uri);
-
-  //   if (response.statusCode == 200) {
-  //     final jsonData = jsonDecode(response.body);
-
-  //     final dataHasil = DataHasil.fromJson(jsonData);
-
-  //     return dataHasil.response;
-  //   } else {
-  //     return <Hasil>[];
-  //   }
-  // }
 }

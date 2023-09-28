@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:papb_aplication/data/model/soccermodel.dart';
 import 'package:papb_aplication/data/model/standding.dart';
+import 'package:papb_aplication/data/model/soccermodel.dart';
 import 'package:papb_aplication/data/source/api.manager.dart';
 import 'package:papb_aplication/data/source/standingapi.dart';
 import 'package:papb_aplication/presentation/page/MatchDetail/matchdetail.dart';
-import 'package:papb_aplication/presentation/widgets/bottombar.dart';
-// import 'package:papb_aplication/presentation/widgets/component.dart';
+import 'package:papb_aplication/presentation/page/standing/standing.dart';
 import 'package:papb_aplication/presentation/widgets/listklasnem.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+class Screennn extends StatefulWidget {
+  const Screennn({Key? key}) : super(key: key);
   @override
   HomeScreenState createState() => HomeScreenState();
 }
 
-class HomeScreenState extends State<HomeScreen> {
-  int _currentIndex = 0;
+class HomeScreenState extends State<Screennn> {
 
   final SoccerApi soccerApi = SoccerApi();
 
@@ -75,7 +73,7 @@ class HomeScreenState extends State<HomeScreen> {
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(
-                        10.0), // Membuat container menjadi bulat dengan radius 10
+                        10.0), 
                   ),
                   padding: const EdgeInsets.only(top: 10, right: 10, left: 10),
                   child: Align(
@@ -110,7 +108,6 @@ class HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
               SizedBox(
                 height: 160,
                 width: double.maxFinite,
@@ -203,13 +200,13 @@ class HomeScreenState extends State<HomeScreen> {
                                               ),
                                             ),
                                             const Spacer(),
-                                            Text(
-                                              "${matches[index].goal.home ?? 0}",
-                                              style: const TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 14,
+                                              Text(
+                                                "${matches[index].goal.home ?? 0}",
+                                                style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 14,
+                                                ),
                                               ),
-                                            ),
                                           ],
                                         ),
                                       ),
@@ -252,6 +249,7 @@ class HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
+              
               const SizedBox(height: 10),
               Row(
                 children: [
@@ -292,83 +290,82 @@ class HomeScreenState extends State<HomeScreen> {
                     color: const Color(0xFF070A52),
                     borderRadius: BorderRadius.circular(20),
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const ListKlasmen(
-                        mp: "MP",
-                        images: "assets/flag/3.png",
-                        teamName: "Team",
-                        W: "W",
-                        D: "D",
-                        L: "L",
-                        pts: "Pts",
-                      ),
-                      const SizedBox(height: 5),
-                      Expanded(
-                        child: FutureBuilder(
-                          future: fetchDataStanding(),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return const Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            } else if (snapshot.hasData &&
-                                snapshot.connectionState ==
-                                    ConnectionState.done) {
-                              List<Standing> standings = snapshot.data!;
-                              return ListView.builder(
-                                itemCount: standings.length >= 5
-                                    ? 5
-                                    : standings.length,
-                                itemBuilder: (context, index) {
-                                  final standing = standings[index];
-                                  return ListKlasmen(
-                                    mp: "${standing.all.played.toString() ?? 0}",
-                                    images: standing.team.logo,
-                                    teamName: standing.team.name,
-                                    W: "${standing.all.win.toString() ?? 0}",
-                                    D: "${standing.all.draw.toString() ?? 0}",
-                                    L: "${standing.all.lose.toString() ?? 0}",
-                                    pts: "${standing.points.toString() ?? 0}",
-                                  );
-                                },
-                              );
-                            } else if (snapshot.hasError) {
-                              print("API Error: ${snapshot.error}");
-                              return Center(
-                                child: Text(
-                                  "Failed to Get Data! ${snapshot.error}",
-                                  style: TextStyle(
-                                      color:
-                                          Colors.red), // Add error text style
-                                ),
-                              );
-                            } else {
-                              // Handle other states if needed
-                              return const Center(
-                                child: Text("No Data Available"),
-                              );
-                            }
-                          },
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                const StandingPage()), 
+                      );
+                    },
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const ListKlasmen(
+                          mp: "MP",
+                          images: "assets/flag/3.png",
+                          teamName: "Team",
+                          W: "W",
+                          D: "D",
+                          L: "L",
+                          pts: "Pts",
                         ),
-                      ),
-                    ],
+                        const SizedBox(height: 5),
+                        Expanded(
+                          child: FutureBuilder(
+                            future: fetchDataStanding(),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              } else if (snapshot.hasData &&
+                                  snapshot.connectionState ==
+                                      ConnectionState.done) {
+                                List<Standing> standings = snapshot.data!;
+                                return ListView.builder(
+                                  itemCount: standings.length >= 5 ? 5 : standings.length,
+                                  itemBuilder: (context, index) {
+                                    final standing = standings[index];
+                                    return ListKlasmen(
+                                      mp: "${standing.all.played ?? 0}",
+                                      images: standing.team.logo ?? "",
+                                      teamName: standing.team.name ?? "",
+                                      W: "${standing.all.win ?? 0}",
+                                      D: "${standing.all.draw ?? 0}",
+                                      L: "${standing.all.lose ?? 0}",
+                                      pts: "${standing.points ?? 0}",
+                                    );
+                                  },
+                                );
+                              } else if (snapshot.hasError) {
+                                print("API Error: ${snapshot.error}");
+                                return Center(
+                                  child: Text(
+                                    "Failed to Get Data! ${snapshot.error}",
+                                    style: const TextStyle(
+                                      color: Colors.red,
+                                    ), 
+                                  ),
+                                );
+                              } else {
+                                return const Center(
+                                  child: Text("No Data Available"),
+                                );
+                              }
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
             ],
           ),
         ),
-      ),
-      bottomNavigationBar: BottomBarPage(
-        currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
       ),
     );
   }

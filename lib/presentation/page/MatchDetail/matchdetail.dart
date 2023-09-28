@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:papb_aplication/presentation/page/Homescreen/views/homescreen.dart';
 import 'package:papb_aplication/presentation/page/Line_Up/page/lineup.dart';
-import 'package:papb_aplication/presentation/widgets/bottombar.dart';
+// import 'package:papb_aplication/presentation/page/Line_Up/page/lineuppage.dart';
 
 class MatchDetailPage extends StatefulWidget {
   const MatchDetailPage({Key? key}) : super(key: key);
@@ -11,99 +11,92 @@ class MatchDetailPage extends StatefulWidget {
 }
 
 class _MatchDetailState extends State<MatchDetailPage> {
-  int _currentIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFD21312),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Padding(
-            padding: EdgeInsets.only(left: 16, top: 25),
-            child: Text(
-              "NaSport",
-              style: TextStyle(
-                fontSize: 24,
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          const SizedBox(height: 20),
-          Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 10.0),
-                child: IconButton(
-                  onPressed: () {
-                    Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(builder: (context) => HomeScreen()),
-                      (route) => false,
-                    );
-                  },
-                  icon: const Icon(Icons.arrow_back,
-                      color: Colors.white, size: 30),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Padding(
+              padding: EdgeInsets.only(left: 16, top: 25),
+              child: Text(
+                "NaSport",
+                style: TextStyle(
+                  fontSize: 24,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-              const Expanded(
-                child: Text(
-                  "English Premier League",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 22,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
+            ),
+            const SizedBox(height: 20),
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 10.0),
+                  child: IconButton(
+                    onPressed: () {
+                      Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(builder: (context) => const Screennn()),
+                        (route) => false,
+                      );
+                    },
+                    icon: const Icon(Icons.arrow_back,
+                        color: Colors.white, size: 30),
                   ),
                 ),
-              ),
-            ],
-          ),
-          // const SizedBox(width: 30),
-          Center(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              // crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                _buildTeamLogo1(),
-                const SizedBox(width: 16),
-                _buildFullTimeScore(),
-                const SizedBox(width: 16),
-                _buildTeamLogo2(), // ini yang buat 2
+                const Expanded(
+                  child: Text(
+                    "English Premier League",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 22,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
               ],
             ),
-          ),
-          const SizedBox(height: 20),
-          _buildButtonRow(),
-          const SizedBox(height: 20),
-          _buildShots(),
-          const SizedBox(height: 20),
-          _buildShotsOnTarget(),
-          const SizedBox(height: 20),
-          _buildPossession(),
-          const SizedBox(height: 20),
-          _buildPasses(),
-          const SizedBox(height: 20),
-          _buildPassAcuraccy(),
-          const SizedBox(height: 20),
-          _buildFouls(),
-          const SizedBox(height: 20),
-          _buildYellowCard(),
-          const SizedBox(height: 20),
-          _buildRedCard(),
-          const SizedBox(height: 20),
-          _buildOffsides(),
-          const SizedBox(height: 20),
-          _buildCorners(),
-        ],
-      ),
-      bottomNavigationBar: BottomBarPage(
-        currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
+            // const SizedBox(width: 30),
+            Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                // crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  _buildTeamLogo1(),
+                  const SizedBox(width: 16),
+                  _buildFullTimeScore(),
+                  const SizedBox(width: 16),
+                  _buildTeamLogo2(), // ini yang buat 2
+                ],
+              ),
+            ),
+            const SizedBox(height: 20),
+            _buildButtonRow(),
+            const SizedBox(height: 20),
+            _buildShots(),
+            const SizedBox(height: 20),
+            _buildShotsOnTarget(),
+            const SizedBox(height: 20),
+            _buildPossession(),
+            const SizedBox(height: 20),
+            _buildPasses(),
+            const SizedBox(height: 20),
+            _buildPassAcuraccy(),
+            const SizedBox(height: 20),
+            _buildFouls(),
+            const SizedBox(height: 20),
+            _buildYellowCard(),
+            const SizedBox(height: 20),
+            _buildRedCard(),
+            const SizedBox(height: 20),
+            _buildOffsides(),
+            const SizedBox(height: 20),
+            _buildCorners(),
+          ],
+        ),
       ),
     );
   }
