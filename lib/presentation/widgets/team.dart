@@ -17,6 +17,8 @@ class ContainerTeam extends StatelessWidget {
         images,
         width: screenWidth * 0.1,
         height: screenHeight * 0.03,
+        // width: 20,
+        // height: 20,
       ),
       // const SizedBox(),
       Text(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:papb_aplication/presentation/page/Homescreen/views/homescreen.dart';
-import 'package:papb_aplication/presentation/page/MatchDetail/matchdetail.dart';
+// import 'package:papb_aplication/presentation/page/MatchDetail/matchdetail.dart';
 import 'package:papb_aplication/presentation/widgets/lineup.dart';
 
 class LineUp extends StatefulWidget {
@@ -34,10 +34,9 @@ class LineUpAppState extends State<LineUp> {
             style: ElevatedButton.styleFrom(
               minimumSize: const Size(150, 50),
               backgroundColor: _showLineup1
-                  ? const Color(
-                      0xFFF15A59) // Warna aktif jika lineup 1 ditampilkan
+                  ? const Color(0xFFF4A58A)
                   : const Color(
-                      0xFF999999), // Warna non-aktif jika lineup 1 tidak ditampilkan
+                      0xFFF15A59), // Warna non-aktif jika lineup 1 tidak ditampilkan
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20),
               ),
@@ -61,10 +60,9 @@ class LineUpAppState extends State<LineUp> {
             style: ElevatedButton.styleFrom(
               minimumSize: const Size(150, 50),
               backgroundColor: !_showLineup1
-                  ? const Color(
-                      0xFFF15A59) // Warna aktif jika lineup 2 ditampilkan
+                  ? const Color(0xFFF4A58A)
                   : const Color(
-                      0xFF999999), // Warna non-aktif jika lineup 2 tidak ditampilkan
+                      0xFFF15A59), // Warna non-aktif jika lineup 2 tidak ditampilkan
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20),
               ),
@@ -91,9 +89,9 @@ class LineUpAppState extends State<LineUp> {
             decoration: BoxDecoration(
               border: Border.all(
                 color: Colors.black,
-                width: 2.0,
+                width: 1.0,
               ),
-              color: Colors.white,
+              color: const Color(0xFFF15A59),
             ),
             width: double.maxFinite,
             height: 550,
@@ -107,7 +105,7 @@ class LineUpAppState extends State<LineUp> {
                     child: Text(
                       "Formation",
                       style: TextStyle(
-                        color: Colors.black,
+                        color: Colors.white,
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
                       ),
@@ -115,7 +113,7 @@ class LineUpAppState extends State<LineUp> {
                   ),
                 ),
                 Container(
-                  color: const Color.fromRGBO(158, 158, 158, 1),
+                  color: const Color(0xFFF4A58A),
                   height: 30,
                   width: double.maxFinite,
                   child: const Center(
@@ -129,18 +127,18 @@ class LineUpAppState extends State<LineUp> {
                     ),
                   ),
                 ),
-                Container(
+                SizedBox(
                   height: 280,
                   child: ListView.builder(
                     itemCount: 11,
                     itemBuilder: (BuildContext context, int index) {
                       return LineUpcomponent(
-                          number: "${index + 1}", name: "Player ${index + 1}");
+                          number: "${index + 1}", name: "Player ${index + 1}", BackgroundColor: "",);
                     },
                   ),
                 ),
                 Container(
-                  color: Colors.grey,
+                  color: const Color(0xFFF4A58A),
                   height: 30,
                   width: double.maxFinite,
                   child: const Center(
@@ -164,7 +162,7 @@ class LineUpAppState extends State<LineUp> {
                             .toString(); // Nomor dapat diambil dari indeks + 1
                         final playerName = "Pemain ${index + 1}";
                         return LineUpcomponent(
-                            number: number, name: playerName);
+                            number: number, name: playerName, BackgroundColor: "");
                       }),
                 ),
               ],
@@ -187,7 +185,7 @@ class LineUpAppState extends State<LineUp> {
                 color: Colors.black,
                 width: 2.0,
               ),
-              color: Colors.white,
+              color: const Color(0xFFF15A59),
             ),
             width: double.maxFinite,
             height: 550,
@@ -201,7 +199,7 @@ class LineUpAppState extends State<LineUp> {
                     child: Text(
                       "Formation",
                       style: TextStyle(
-                        color: Colors.black,
+                        color: Colors.white,
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
                       ),
@@ -209,7 +207,7 @@ class LineUpAppState extends State<LineUp> {
                   ),
                 ),
                 Container(
-                  color: const Color.fromRGBO(158, 158, 158, 1),
+                  color: const Color(0xFFF4A58A),
                   height: 30,
                   width: double.maxFinite,
                   child: const Center(
@@ -223,21 +221,20 @@ class LineUpAppState extends State<LineUp> {
                     ),
                   ),
                 ),
-                Container(
+                SizedBox(
                   height:
                       280, // Tinggi sesuaikan agar tidak tumpang tindih dengan "SUBTITUTES"
                   child: ListView.builder(
                     itemCount: 11,
                     itemBuilder: (BuildContext context, int index) {
-                      final number = (index + 1)
-                          .toString(); // Nomor dapat diambil dari indeks + 1
+                      final number = (index + 1).toString();
                       final playerName = "Pemain ${index + 1}";
-                      return LineUpcomponent(number: number, name: playerName);
+                      return LineUpcomponent(number: number, name: playerName, BackgroundColor: "",);
                     },
                   ),
                 ),
                 Container(
-                  color: Colors.grey,
+                  color: const Color(0xFFF4A58A),
                   height: 30,
                   width: double.maxFinite,
                   child: const Center(
@@ -260,7 +257,12 @@ class LineUpAppState extends State<LineUp> {
                       final number = (index + 1)
                           .toString(); // Nomor dapat diambil dari indeks + 1
                       final playerName = "Pemain ${index + 1}";
-                      return LineUpcomponent(number: number, name: playerName);
+                      final backgroundColor = Colors.white.toString();
+                      return LineUpcomponent(
+                        number: number,
+                        name: playerName,
+                        BackgroundColor: backgroundColor,
+                      );
                     },
                   ),
                 ),
@@ -299,7 +301,8 @@ class LineUpAppState extends State<LineUp> {
                   child: IconButton(
                     onPressed: () {
                       Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(builder: (context) => const Screennn()),
+                        MaterialPageRoute(
+                            builder: (context) => const Screennn()),
                         (route) => false,
                       );
                     },
@@ -336,7 +339,7 @@ class LineUpAppState extends State<LineUp> {
             LayoutBuilder(builder: (context, constraints) {
               if (constraints.maxWidth > 1100) {
                 _showLineup1 = true;
-                  _showLineup2 = true;
+                _showLineup2 = true;
                 return Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -460,11 +463,12 @@ class LineUpAppState extends State<LineUp> {
                 right: 8.0, left: 8.0), // Jarak 8.0 di semua sisi tombol
             child: ElevatedButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const MatchDetailPage()),
-                );
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //       builder: (context) =>  MatchDetailPage(
+                //         indexmatch: index)),
+                // );
               },
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size(150, 60),
@@ -490,7 +494,7 @@ class LineUpAppState extends State<LineUp> {
               onPressed: () {},
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size(150, 60),
-                backgroundColor: const Color(0xFFF15A59),
+                backgroundColor: const Color(0xFFF4A58A),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
                 ),

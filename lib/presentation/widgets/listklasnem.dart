@@ -55,7 +55,7 @@ class ListKlasmen extends StatelessWidget {
               ),
     
               ContainerNumber(number: pts),
-              // const SizedBox(width: 12,),
+              const SizedBox(width: 12,),
             ],
           )
         ],

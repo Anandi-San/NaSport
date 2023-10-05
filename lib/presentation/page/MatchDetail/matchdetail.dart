@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:papb_aplication/data/model/soccermodel.dart';
 import 'package:papb_aplication/presentation/page/Homescreen/views/homescreen.dart';
 import 'package:papb_aplication/presentation/page/Line_Up/page/lineup.dart';
 // import 'package:papb_aplication/presentation/page/Line_Up/page/lineuppage.dart';
 
 class MatchDetailPage extends StatefulWidget {
-  const MatchDetailPage({Key? key}) : super(key: key);
+  final SoccerMatch soccerMatch;
+  const MatchDetailPage({Key? key, required this.soccerMatch})
+      : super(key: key);
 
   @override
-  _MatchDetailState createState() => _MatchDetailState();
+  MatchDetailState createState() => MatchDetailState();
 }
 
-class _MatchDetailState extends State<MatchDetailPage> {
+class MatchDetailState extends State<MatchDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,7 +41,8 @@ class _MatchDetailState extends State<MatchDetailPage> {
                   child: IconButton(
                     onPressed: () {
                       Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(builder: (context) => const Screennn()),
+                        MaterialPageRoute(
+                            builder: (context) => const Screennn()),
                         (route) => false,
                       );
                     },
@@ -118,8 +122,8 @@ class _MatchDetailState extends State<MatchDetailPage> {
                 borderRadius: BorderRadius.circular(16.0),
               ),
             ),
-            Image.asset(
-              "assets/flag/arsenal.png",
+            Image.network(
+              widget.soccerMatch.home.logoUrl,
               width: 80,
               height: 80,
               fit: BoxFit.contain,
@@ -131,22 +135,47 @@ class _MatchDetailState extends State<MatchDetailPage> {
   }
 
   Widget _buildFullTimeScore() {
-    return const Expanded(
-      child: Center(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        const Text(
+          "Full Time",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        Row(
           children: [
+            // SizedBox(
+            //   width: 30, // Sesuaikan dengan lebar yang Anda inginkan
+            // ),
             Text(
-              "Full Time",
-              style: TextStyle(
+              "${widget.soccerMatch.goal.home}",
+              style: const TextStyle(
                 color: Colors.white,
-                fontSize: 22,
+                fontSize: 45,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            Text(
-              "3 - 1",
+            const SizedBox(
+              width: 30, // Sesuaikan dengan lebar yang Anda inginkan
+            ),
+            const Text(
+              "-",
               style: TextStyle(
+                color: Colors.white,
+                fontSize: 45,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(
+              width: 30, // Sesuaikan dengan lebar yang Anda inginkan
+            ),
+            Text(
+              "${widget.soccerMatch.goal.away}",
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 45,
                 fontWeight: FontWeight.bold,
@@ -154,7 +183,7 @@ class _MatchDetailState extends State<MatchDetailPage> {
             ),
           ],
         ),
-      ),
+      ],
     );
   }
 
@@ -166,7 +195,7 @@ class _MatchDetailState extends State<MatchDetailPage> {
           alignment: Alignment.center,
           children: [
             Container(
-              width: double.infinity,
+              width: double.maxFinite,
               constraints: const BoxConstraints(
                 minHeight: 100,
               ),
@@ -175,10 +204,10 @@ class _MatchDetailState extends State<MatchDetailPage> {
                 borderRadius: BorderRadius.circular(16.0),
               ),
             ),
-            Image.asset(
-              "assets/flag/mu1.png",
-              width: 140,
-              height: 140,
+            Image.network(
+              widget.soccerMatch.away.logoUrl,
+              width: 80,
+              height: 80,
               fit: BoxFit.contain,
             ),
           ],
@@ -196,11 +225,10 @@ class _MatchDetailState extends State<MatchDetailPage> {
             padding: const EdgeInsets.only(
                 left: 8.0, right: 8.0), // Jarak 8.0 di semua sisi tombol
             child: ElevatedButton(
-              onPressed: () {
-              },
+              onPressed: () {},
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size(150, 60),
-                backgroundColor: const Color(0xFFF15A59),
+                backgroundColor: const Color(0xFFF4A58A),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
                 ),

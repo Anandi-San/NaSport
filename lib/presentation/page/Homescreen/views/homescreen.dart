@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
+// import 'package:papb_aplication/data/model/klasmenttest/fixtures.dart';
+// import 'package:papb_aplication/data/model/klasment.dart';
+// import 'package:papb_aplication/data/model/klasmenttest/klasmennt.dart';
+// import 'package:papb_aplication/data/model/klasmenttest/klasmenttest.dart';
+// import 'package:papb_aplication/data/model/klasmenttest/klasmennnnn.dart';
 // import 'package:papb_aplication/data/model/standding.dart';
 import 'package:papb_aplication/data/model/soccermodel.dart';
+// import 'package:papb_aplication/data/model/standding.dart';
 import 'package:papb_aplication/data/source/api.manager.dart';
 import 'package:papb_aplication/data/source/standingapi.dart';
 import 'package:papb_aplication/presentation/page/MatchDetail/matchdetail.dart';
 import 'package:papb_aplication/presentation/page/standing/standing.dart';
 import 'package:papb_aplication/presentation/widgets/listklasnem.dart';
-import 'package:papb_aplication/data/model/Standingmodel.dart';
+// import 'package:papb_aplication/data/model/Standingmodel.dart';
+
+// import '../../../../data/model/standding.dart';
 
 class Screennn extends StatefulWidget {
   const Screennn({Key? key}) : super(key: key);
@@ -30,14 +38,18 @@ class HomeScreenState extends State<Screennn> {
 
   final StandingApi standingApi = StandingApi();
 
-  Future<List<StandingModel>> fetchDataStanding() async {
-    final standingModel = await standingApi.getAllstanding();
-    if (standingModel.isNotEmpty) {
-      return standingModel;
-    } else {
-      return [];
-    }
+  Future<void> fetchDataStanding() async {
+    final klasmentData = await standingApi.getAllFixtures();
+    // if (klasmentData.isNotEmpty) {
+    //   return klasmentData;
+    // } else {
+    //   return [];
+    // }
+    print('klasmentData: $klasmentData');
+    // return klasmentData;
   }
+
+  
 
   @override
   Widget build(BuildContext context) {
@@ -134,8 +146,9 @@ class HomeScreenState extends State<Screennn> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) =>
-                                          const MatchDetailPage(),
+                                      builder: (context) => MatchDetailPage(
+                                        soccerMatch: matches[index],
+                                      ),
                                     ),
                                   );
                                 },
@@ -153,9 +166,9 @@ class HomeScreenState extends State<Screennn> {
                                         CrossAxisAlignment.center,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      const Text(
-                                        "Regular Season",
-                                        style: TextStyle(
+                                      Text(
+                                        matches[index].league.round,
+                                        style: const TextStyle(
                                           color: Colors.white,
                                           fontSize: 16.0,
                                         ),
@@ -283,7 +296,7 @@ class HomeScreenState extends State<Screennn> {
               Center(
                 child: Container(
                   width: double.maxFinite,
-                  height: 200,
+                  height: 300,
                   decoration: BoxDecoration(
                     color: const Color(0xFF070A52),
                     borderRadius: BorderRadius.circular(20),
@@ -292,17 +305,16 @@ class HomeScreenState extends State<Screennn> {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                            builder: (context) => const StandingPage()),
+                        MaterialPageRoute(builder: (context) => StandingPage()),
                       );
                     },
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         const ListKlasmen(
-                          mp: "MP",
-                          images: "assets/flag/3.png",
+                          images: "",
                           teamName: "Team",
+                          mp: "MP",
                           W: "W",
                           D: "D",
                           L: "L",
@@ -321,22 +333,23 @@ class HomeScreenState extends State<Screennn> {
                               } else if (snapshot.hasData &&
                                   snapshot.connectionState ==
                                       ConnectionState.done) {
-                                List<StandingModel> standings = snapshot.data!;
+                                // List<List<Standing>>? standing = snapshot.data!;
                                 return ListView.builder(
-                                  itemCount: standings.length >= 5
-                                      ? 5
-                                      : standings.length,
-                                  itemBuilder: (context, index) {
-                                    final standing = standings[index];
-                                    return ListKlasmen(
-                                      mp: "${standing.all.played ?? 0}",
-                                      images: standing.team.logo ?? "",
-                                      teamName: standing.team.name ?? "",
-                                      W: "${standing.all.win ?? 0}",
-                                      D: "${standing.all.draw ?? 0}",
-                                      L: "${standing.all.lose ?? 0}",
-                                      pts: "${standing.points ?? 0}",
-                                    );
+                                  itemCount: 5,
+                                  itemBuilder: (context, index) {                                    // print(standings);
+                                    // return ListKlasmen(
+                                    //   images: standings.team!.logo.toString(),
+                                    //   teamName: standings.team!.name.toString(),
+                                    //   mp: "${standings.all!.played}",
+                                    //   W: "${standings.all!.win}",
+                                    //   D: "${standings.all!.draw}",
+                                    //   L: "${standings.all!.lose}",
+                                    //   pts: "${standings.points}",
+                                    // );
+                                    return const Placeholder();
+                                    // return ListKlasmen(
+                                      // images: ,
+                                    // );
                                   },
                                 );
                               } else if (snapshot.hasError) {

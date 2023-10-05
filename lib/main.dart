@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:papb_aplication/presentation/page/Homescreen/views/homescreen.dart'; // Ganti dengan path yang sesuai
-import 'package:papb_aplication/presentation/page/standing/standing.dart';
+// import 'package:papb_aplication/presentation/page/MatchDetail/matchdetail.dart';
+// import 'package:papb_aplication/presentation/page/standing/standing.dart';
 // import 'package:papb_aplication/presentation/page/Line_Up/page/lineup.dart';
 import 'package:papb_aplication/presentation/widgets/splash.dart';
 
@@ -26,12 +27,12 @@ class SplashScreenBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: Future.delayed(const Duration(seconds: 5)),
+      future: Future.delayed(const Duration(seconds: 2)),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const SplashScreen();
         } else {
-          return const StandingPage(); // Halaman utama setelah SplashScreen
+          return const Screennn(); // Halaman utama setelah SplashScreen
         }
       },
     );

@@ -1,9 +1,22 @@
 import 'package:flutter/material.dart';
+// import 'package:papb_aplication/data/model/klasment.dart';
+import 'package:papb_aplication/data/model/klasmenttest/klasmennt.dart';
+// import 'package:papb_aplication/data/model/klasmenttest/klasmenttest.dart';
+// import 'package:papb_aplication/data/model/soccermodel.dart';
+// import 'package:papb_aplication/data/model/standding.dart';
+import 'package:papb_aplication/data/source/standingapi.dart';
 import 'package:papb_aplication/presentation/page/Homescreen/views/homescreen.dart';
 import 'package:papb_aplication/presentation/widgets/listklasnem.dart';
 
 class StandingPage extends StatelessWidget {
-  const StandingPage({Key? key});
+  StandingPage({Key? key}) : super(key: key);
+
+  final StandingApi standingApi = StandingApi();
+
+  Future<List<Standingssss>> fetchData() async {
+    final standings = await standingApi.getAllFixtures();
+    return standings; // Anda bisa mengembalikan langsung data tanpa penanganan khusus jika kosong
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +92,8 @@ class StandingPage extends StatelessWidget {
                       'England',
                       style: TextStyle(
                         fontSize: 24,
-                        color: Colors.white, // Atur ukuran font sesuai kebutuhan Anda
+                        color: Colors
+                            .white, // Atur ukuran font sesuai kebutuhan Anda
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -110,14 +124,14 @@ class StandingPage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            Center(
+            const Center(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   ListKlasmen(
-                    mp: "MP",
                     images: "assets/flag/3.png",
                     teamName: "Team",
+                    mp: "MP",
                     W: "W",
                     D: "D",
                     L: "L",
@@ -149,7 +163,7 @@ class StandingPage extends StatelessWidget {
                   ),
                   child: Text(
                     "Team ${index + 1}",
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 16.0,
                       fontWeight: FontWeight.bold,
                       color: Colors.black,

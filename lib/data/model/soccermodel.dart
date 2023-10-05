@@ -1,16 +1,21 @@
+// import 'dart:convert';
+
 class SoccerMatch {
   Fixture fixture;
   Team home;
   Team away;
   Goal goal;
-  SoccerMatch(this.fixture, this.home, this.away, this.goal);
+  League league;
+  SoccerMatch(this.fixture, this.home, this.away, this.goal, this.league);
 
   factory SoccerMatch.fromJson(Map<String, dynamic> json) {
     return SoccerMatch(
         Fixture.fromJson(json['fixture']),
         Team.fromJson(json['teams']['home']),
         Team.fromJson(json['teams']['away']),
-        Goal.fromJson(json['goals']));
+        Goal.fromJson(json['goals']),
+        League.fromJson(json['league'])
+        );
   }
 }
 
@@ -56,3 +61,16 @@ class Goal {
     return Goal(json['home'], json['away']);
   }
 }
+
+class League {
+  int? id;
+  String name;
+  int? season;
+  String round;
+  League(this.id, this.name, this.season, this.round);
+
+  factory League.fromJson(Map<String, dynamic> json) {
+    return League(json['id'], json['name'], json['season'], json['round']);
+  }
+}
+
