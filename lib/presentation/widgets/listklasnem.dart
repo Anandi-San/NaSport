@@ -3,7 +3,7 @@ import 'package:papb_aplication/presentation/widgets/component.dart';
 import 'package:papb_aplication/presentation/widgets/team.dart';
 
 class ListKlasmen extends StatelessWidget {
-  final String images;
+  final String? images;
   final String teamName;
   final String mp;
   final String W;
@@ -14,7 +14,7 @@ class ListKlasmen extends StatelessWidget {
   const ListKlasmen({
     super.key,
     required this.mp,
-    required this.images,
+    this.images,
     required this.teamName,
     required this.W,
     required this.D,
@@ -25,37 +25,37 @@ class ListKlasmen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 10, right: 10, left: 10,),
+      padding: const EdgeInsets.only(
+        top: 10,
+        // right: 2,
+        // left: 10,
+        bottom: 10,
+      ),
       child: Row(
         children: [
-          ContainerTeam(
-            images: images,
-            teamName: teamName,
-          ),
+          if (images != null)
+            ContainerTeam(
+              images: images!,
+              teamName: teamName,
+            ),
+          if (images == null)
+            Text(
+              teamName , // Tambahkan ?? '' untuk memberikan nilai default jika teamName adalah null atau kosong
+              style: const TextStyle(fontSize: 14, color: Colors.white),
+            ),
           const Spacer(),
           Row(
             children: [
               ContainerNumber(number: mp),
-              const SizedBox(
-                width: 12,
-              ),
+              const SizedBox(width: 12),
               ContainerNumber(number: W),
-              const SizedBox(
-                width: 12,
-              ),
-    
+              const SizedBox(width: 12),
               ContainerNumber(number: D),
-              const SizedBox(
-                width: 12,
-              ),
-    
+              const SizedBox(width: 12),
               ContainerNumber(number: L),
-              const SizedBox(
-                width: 12,
-              ),
-    
+              const SizedBox(width: 12),
               ContainerNumber(number: pts),
-              const SizedBox(width: 12,),
+              const SizedBox(width: 12),
             ],
           )
         ],

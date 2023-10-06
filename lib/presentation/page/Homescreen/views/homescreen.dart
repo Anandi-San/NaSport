@@ -1,20 +1,11 @@
 import 'package:flutter/material.dart';
-// import 'package:papb_aplication/data/model/klasmenttest/fixtures.dart';
-// import 'package:papb_aplication/data/model/klasment.dart';
-// import 'package:papb_aplication/data/model/klasmenttest/klasmennt.dart';
-// import 'package:papb_aplication/data/model/klasmenttest/klasmenttest.dart';
-// import 'package:papb_aplication/data/model/klasmenttest/klasmennnnn.dart';
-// import 'package:papb_aplication/data/model/standding.dart';
+import 'package:papb_aplication/data/model/klasmenttest/fixtures.dart';
 import 'package:papb_aplication/data/model/soccermodel.dart';
-// import 'package:papb_aplication/data/model/standding.dart';
 import 'package:papb_aplication/data/source/api.manager.dart';
 import 'package:papb_aplication/data/source/standingapi.dart';
 import 'package:papb_aplication/presentation/page/MatchDetail/matchdetail.dart';
 import 'package:papb_aplication/presentation/page/standing/standing.dart';
 import 'package:papb_aplication/presentation/widgets/listklasnem.dart';
-// import 'package:papb_aplication/data/model/Standingmodel.dart';
-
-// import '../../../../data/model/standding.dart';
 
 class Screennn extends StatefulWidget {
   const Screennn({Key? key}) : super(key: key);
@@ -38,18 +29,9 @@ class HomeScreenState extends State<Screennn> {
 
   final StandingApi standingApi = StandingApi();
 
-  Future<void> fetchDataStanding() async {
-    final klasmentData = await standingApi.getAllFixtures();
-    // if (klasmentData.isNotEmpty) {
-    //   return klasmentData;
-    // } else {
-    //   return [];
-    // }
-    print('klasmentData: $klasmentData');
-    // return klasmentData;
+  Future<Fixtures> fetchDataStanding() async {
+    return await standingApi.getAllFixtures();
   }
-
-  
 
   @override
   Widget build(BuildContext context) {
@@ -167,7 +149,7 @@ class HomeScreenState extends State<Screennn> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
-                                        matches[index].league.round,
+                                        matches[index].leagues.round,
                                         style: const TextStyle(
                                           color: Colors.white,
                                           fontSize: 16.0,
@@ -301,77 +283,100 @@ class HomeScreenState extends State<Screennn> {
                     color: const Color(0xFF070A52),
                     borderRadius: BorderRadius.circular(20),
                   ),
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => StandingPage()),
-                      );
-                    },
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        const ListKlasmen(
-                          images: "",
-                          teamName: "Team",
-                          mp: "MP",
-                          W: "W",
-                          D: "D",
-                          L: "L",
-                          pts: "Pts",
-                        ),
-                        const SizedBox(height: 5),
-                        Expanded(
-                          child: FutureBuilder(
-                            future: fetchDataStanding(),
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return const Center(
-                                  child: CircularProgressIndicator(),
-                                );
-                              } else if (snapshot.hasData &&
-                                  snapshot.connectionState ==
-                                      ConnectionState.done) {
-                                // List<List<Standing>>? standing = snapshot.data!;
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const ListKlasmen(
+                        images: null,
+                        teamName: "TeamName",
+                        mp: "MP",
+                        W: "W",
+                        D: "D",
+                        L: "L",
+                        pts: "Pts",
+                      ),
+                      const SizedBox(height: 5),
+                      Expanded(
+                        child: FutureBuilder<Fixtures>(
+                          future: fetchDataStanding(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            } else if (snapshot.hasData &&
+                                snapshot.connectionState ==
+                                    ConnectionState.done) {
+                              final Fixtures fixtures = snapshot.data!;
+                              List<Response>? response = fixtures.response;
+                              if (response!.isNotEmpty) {
+                                final Response responseItem = response[0];
+                                final League? league = responseItem.league;
+                                final List<Standing> standings =
+                                    league!.standings![0];
+
                                 return ListView.builder(
                                   itemCount: 5,
-                                  itemBuilder: (context, index) {                                    // print(standings);
-                                    // return ListKlasmen(
-                                    //   images: standings.team!.logo.toString(),
-                                    //   teamName: standings.team!.name.toString(),
-                                    //   mp: "${standings.all!.played}",
-                                    //   W: "${standings.all!.win}",
-                                    //   D: "${standings.all!.draw}",
-                                    //   L: "${standings.all!.lose}",
-                                    //   pts: "${standings.points}",
-                                    // );
-                                    return const Placeholder();
-                                    // return ListKlasmen(
-                                      // images: ,
-                                    // );
+                                  itemBuilder: (context, index) {
+                                    final Standing standing = standings[index];
+                                    final String teamName =
+                                        standing.team?.name ?? "Unknown Team";
+                                    final String teamLogo =
+                                        standing.team?.logo ?? "";
+                                    final int mp = standing.all?.played ?? 0;
+                                    final int w = standing.all?.win ?? 0;
+                                    final int d = standing.all?.draw ?? 0;
+                                    final int l = standing.all?.lose ?? 0;
+                                    final int pts = standing.points ?? 0;
+
+                                    return GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => StandingPage(
+                                              fixtures: standings,
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      child: ListKlasmen(
+                                        images: teamLogo,
+                                        teamName: teamName,
+                                        mp: "$mp",
+                                        W: '$w',
+                                        D: '$d',
+                                        L: '$l',
+                                        pts: '$pts',
+                                      ),
+                                    );
                                   },
-                                );
-                              } else if (snapshot.hasError) {
-                                print("API Error: ${snapshot.error}");
-                                return Center(
-                                  child: Text(
-                                    "Failed to Get Data! ${snapshot.error}",
-                                    style: const TextStyle(
-                                      color: Colors.red,
-                                    ),
-                                  ),
                                 );
                               } else {
                                 return const Center(
                                   child: Text("No Data Available"),
                                 );
                               }
-                            },
-                          ),
+                            } else if (snapshot.hasError) {
+                              print("API Error: ${snapshot.error}");
+                              return Center(
+                                child: Text(
+                                  "Failed to Get Data! ${snapshot.error}",
+                                  style: const TextStyle(
+                                    color: Colors.red,
+                                  ),
+                                ),
+                              );
+                            } else {
+                              return const Center(
+                                child: Text("No Data Available"),
+                              );
+                            }
+                          },
                         ),
-                      ],
-                    ),
+                      )
+                    ],
                   ),
                 ),
               ),

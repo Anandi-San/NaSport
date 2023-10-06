@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ContainerTeam extends StatelessWidget {
-  final String images;
+  final String? images;
   final String teamName;
   const ContainerTeam(
       {super.key, required this.images, required this.teamName});
@@ -13,17 +13,18 @@ class ContainerTeam extends StatelessWidget {
 
     return Row(
       children: [
-        Image.asset(
-        images,
-        width: screenWidth * 0.1,
-        height: screenHeight * 0.03,
+        if (images != null)
+        Image.network(
+        images!,
+        width: screenWidth * 0.2,
+        height: screenHeight * 0.04,
         // width: 20,
         // height: 20,
       ),
       // const SizedBox(),
       Text(
         teamName,
-        style: const TextStyle(fontSize: 16, color: Colors.white),
+        style: const TextStyle(fontSize: 14, color: Colors.white),
       ),
       ],
       

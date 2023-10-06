@@ -1,25 +1,15 @@
 import 'package:flutter/material.dart';
-// import 'package:papb_aplication/data/model/klasment.dart';
-import 'package:papb_aplication/data/model/klasmenttest/klasmennt.dart';
-// import 'package:papb_aplication/data/model/klasmenttest/klasmenttest.dart';
-// import 'package:papb_aplication/data/model/soccermodel.dart';
-// import 'package:papb_aplication/data/model/standding.dart';
-import 'package:papb_aplication/data/source/standingapi.dart';
 import 'package:papb_aplication/presentation/page/Homescreen/views/homescreen.dart';
 import 'package:papb_aplication/presentation/widgets/listklasnem.dart';
+import 'package:papb_aplication/data/model/klasmenttest/fixtures.dart';
 
 class StandingPage extends StatelessWidget {
-  StandingPage({Key? key}) : super(key: key);
-
-  final StandingApi standingApi = StandingApi();
-
-  Future<List<Standingssss>> fetchData() async {
-    final standings = await standingApi.getAllFixtures();
-    return standings; // Anda bisa mengembalikan langsung data tanpa penanganan khusus jika kosong
-  }
+  final List<Standing> fixtures;
+  const StandingPage({Key? key, required this.fixtures}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    print("fixtures: $fixtures");
     return Scaffold(
       backgroundColor: const Color(0xFFD21312),
       body: SingleChildScrollView(
@@ -124,12 +114,13 @@ class StandingPage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            const Center(
+            Center(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
+                crossAxisAlignment:
+                    CrossAxisAlignment.start, // Mengatur konten ke kiri
                 children: [
                   ListKlasmen(
-                    images: "assets/flag/3.png",
+                    images: null,
                     teamName: "Team",
                     mp: "MP",
                     W: "W",
@@ -142,32 +133,39 @@ class StandingPage extends StatelessWidget {
               ),
             ),
             Container(
-              margin:
-                  const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
               width: double.infinity,
               height: 1,
-              color: Colors.white,
+              color: Color.fromARGB(255, 255, 255, 255),
             ),
             ListView.builder(
-              shrinkWrap:
-                  true, // Tambahkan ini agar ListView dapat berada di dalam SingleChildScrollView
-              itemCount: 20,
+              shrinkWrap: true,
+              itemCount: fixtures.length,
               itemBuilder: (context, index) {
+                final Standing standing = fixtures[index];
+                final String teamName = standing.team?.name ?? "Unknown Team";
+                final String teamLogo = standing.team?.logo ?? "";
+                final int mp = standing.all?.played ?? 0;
+                final int w = standing.all?.win ?? 0;
+                final int d = standing.all?.draw ?? 0;
+                final int l = standing.all?.lose ?? 0;
+                final int pts = standing.points ?? 0;
+
                 return Container(
                   margin:
                       const EdgeInsets.symmetric(vertical: 3.0, horizontal: 10),
-                  padding: const EdgeInsets.all(12.0),
+                  // padding: const EdgeInsets.all(12.0),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: const Color(0xFF070A52),
                     borderRadius: BorderRadius.circular(8.0),
                   ),
-                  child: Text(
-                    "Team ${index + 1}",
-                    style: const TextStyle(
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
+                  child: ListKlasmen(
+                    images: teamLogo,
+                    teamName: teamName,
+                    mp: "$mp",
+                    W: '$w',
+                    D: '$d',
+                    L: '$l',
+                    pts: '$pts',
                   ),
                 );
               },
