@@ -1,0 +1,93 @@
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+_$StaticticsImpl _$$StaticticsImplFromJson(Map<String, dynamic> json) =>
+    _$StaticticsImpl(
+      staticticsGet: json['get'] as String?,
+      parameters: json['parameters'] == null
+          ? null
+          : Parameters.fromJson(json['parameters'] as Map<String, dynamic>),
+      errors: json['errors'] as List<dynamic>?,
+      results: json['results'] as int?,
+      paging: json['paging'] == null
+          ? null
+          : Paging.fromJson(json['paging'] as Map<String, dynamic>),
+      response: (json['response'] as List<dynamic>?)
+          ?.map((e) => Response.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$$StaticticsImplToJson(_$StaticticsImpl instance) =>
+    <String, dynamic>{
+      'get': instance.staticticsGet,
+      'parameters': instance.parameters?.toJson(),
+      'errors': instance.errors,
+      'results': instance.results,
+      'paging': instance.paging?.toJson(),
+      'response': instance.response?.map((e) => e.toJson()).toList(),
+    };
+
+_$PagingImpl _$$PagingImplFromJson(Map<String, dynamic> json) => _$PagingImpl(
+      current: json['current'] as int?,
+      total: json['total'] as int?,
+    );
+
+Map<String, dynamic> _$$PagingImplToJson(_$PagingImpl instance) =>
+    <String, dynamic>{
+      'current': instance.current,
+      'total': instance.total,
+    };
+
+_$ParametersImpl _$$ParametersImplFromJson(Map<String, dynamic> json) =>
+    _$ParametersImpl(
+      team: json['team'] as String?,
+      fixture: json['fixture'] as String?,
+    );
+
+Map<String, dynamic> _$$ParametersImplToJson(_$ParametersImpl instance) =>
+    <String, dynamic>{
+      'team': instance.team,
+      'fixture': instance.fixture,
+    };
+
+_$ResponseImpl _$$ResponseImplFromJson(Map<String, dynamic> json) =>
+    _$ResponseImpl(
+      team: json['team'] == null
+          ? null
+          : Team.fromJson(json['team'] as Map<String, dynamic>),
+      statistics: (json['statistics'] as List<dynamic>?)
+          ?.map((e) => Statistic.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$$ResponseImplToJson(_$ResponseImpl instance) =>
+    <String, dynamic>{
+      'team': instance.team?.toJson(),
+      'statistics': instance.statistics?.map((e) => e.toJson()).toList(),
+    };
+
+_$StatisticImpl _$$StatisticImplFromJson(Map<String, dynamic> json) =>
+    _$StatisticImpl(
+      type: json['type'] as String?,
+      value: json['value'],
+    );
+
+Map<String, dynamic> _$$StatisticImplToJson(_$StatisticImpl instance) =>
+    <String, dynamic>{
+      'type': instance.type,
+      'value': instance.value,
+    };
+
+_$TeamImpl _$$TeamImplFromJson(Map<String, dynamic> json) => _$TeamImpl(
+      id: json['id'] as int?,
+      name: json['name'] as String?,
+      logo: json['logo'] as String?,
+    );
+
+Map<String, dynamic> _$$TeamImplToJson(_$TeamImpl instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'name': instance.name,
+      'logo': instance.logo,
+    };

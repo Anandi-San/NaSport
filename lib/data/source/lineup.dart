@@ -1,16 +1,17 @@
 import 'dart:convert';
 import 'package:http/http.dart';
-// import 'package:papb_aplication/data/model/Standingmodel.dart';
 import 'package:papb_aplication/data/model/standding.dart';
-// import 'package:papb_aplication/data/model/standding.dart';
 
 class StandingApi {
-  final String apiUrl =
-      "https://v3.football.api-sports.io/standings?season=2023&league=39";
+  late final String apiUrl;
   static const headers = {
     'x-rapidapi-host': "v3.football.api-sports.io",
     'x-rapidapi-key': "e93a90553f65e6ae949c27992ab9e7b2",
   };
+
+  StandingApi({required int selectedfixture}) {
+    apiUrl = "https://v3.football.api-sports.io/fixtures/lineups?fixture=$selectedfixture";
+  }
 
   Future<List<Klasment>> getAllstanding() async {
     final Uri uri = Uri.parse(apiUrl);

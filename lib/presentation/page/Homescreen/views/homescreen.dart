@@ -246,7 +246,7 @@ class HomeScreenState extends State<Screennn> {
               const SizedBox(height: 10),
               Row(
                 children: [
-                  Container(
+                  SizedBox(
                     width: 70,
                     height: 70,
                     child: Image.asset("assets/flag/england.png"),

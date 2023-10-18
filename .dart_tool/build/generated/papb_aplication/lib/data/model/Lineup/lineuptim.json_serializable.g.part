@@ -1,0 +1,164 @@
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+_$LineuptimImpl _$$LineuptimImplFromJson(Map<String, dynamic> json) =>
+    _$LineuptimImpl(
+      lineuptimGet: json['get'] as String?,
+      parameters: json['parameters'] == null
+          ? null
+          : Parameters.fromJson(json['parameters'] as Map<String, dynamic>),
+      errors: json['errors'] as List<dynamic>?,
+      results: json['results'] as int?,
+      paging: json['paging'] == null
+          ? null
+          : Paging.fromJson(json['paging'] as Map<String, dynamic>),
+      response: (json['response'] as List<dynamic>?)
+          ?.map((e) => Response.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$$LineuptimImplToJson(_$LineuptimImpl instance) =>
+    <String, dynamic>{
+      'get': instance.lineuptimGet,
+      'parameters': instance.parameters?.toJson(),
+      'errors': instance.errors,
+      'results': instance.results,
+      'paging': instance.paging?.toJson(),
+      'response': instance.response?.map((e) => e.toJson()).toList(),
+    };
+
+_$PagingImpl _$$PagingImplFromJson(Map<String, dynamic> json) => _$PagingImpl(
+      current: json['current'] as int?,
+      total: json['total'] as int?,
+    );
+
+Map<String, dynamic> _$$PagingImplToJson(_$PagingImpl instance) =>
+    <String, dynamic>{
+      'current': instance.current,
+      'total': instance.total,
+    };
+
+_$ParametersImpl _$$ParametersImplFromJson(Map<String, dynamic> json) =>
+    _$ParametersImpl(
+      fixture: json['fixture'] as String?,
+    );
+
+Map<String, dynamic> _$$ParametersImplToJson(_$ParametersImpl instance) =>
+    <String, dynamic>{
+      'fixture': instance.fixture,
+    };
+
+_$ResponseImpl _$$ResponseImplFromJson(Map<String, dynamic> json) =>
+    _$ResponseImpl(
+      team: json['team'] == null
+          ? null
+          : Team.fromJson(json['team'] as Map<String, dynamic>),
+      formation: json['formation'] as String?,
+      startXi: (json['startXI'] as List<dynamic>?)
+          ?.map((e) => StartXi.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      substitutes: (json['substitutes'] as List<dynamic>?)
+          ?.map((e) => StartXi.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      coach: json['coach'] == null
+          ? null
+          : Coach.fromJson(json['coach'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$$ResponseImplToJson(_$ResponseImpl instance) =>
+    <String, dynamic>{
+      'team': instance.team?.toJson(),
+      'formation': instance.formation,
+      'startXI': instance.startXi?.map((e) => e.toJson()).toList(),
+      'substitutes': instance.substitutes?.map((e) => e.toJson()).toList(),
+      'coach': instance.coach?.toJson(),
+    };
+
+_$CoachImpl _$$CoachImplFromJson(Map<String, dynamic> json) => _$CoachImpl(
+      id: json['id'] as int?,
+      name: json['name'] as String?,
+      photo: json['photo'] as String?,
+    );
+
+Map<String, dynamic> _$$CoachImplToJson(_$CoachImpl instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'name': instance.name,
+      'photo': instance.photo,
+    };
+
+_$StartXiImpl _$$StartXiImplFromJson(Map<String, dynamic> json) =>
+    _$StartXiImpl(
+      player: json['player'] == null
+          ? null
+          : Player.fromJson(json['player'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$$StartXiImplToJson(_$StartXiImpl instance) =>
+    <String, dynamic>{
+      'player': instance.player?.toJson(),
+    };
+
+_$PlayerImpl _$$PlayerImplFromJson(Map<String, dynamic> json) => _$PlayerImpl(
+      id: json['id'] as int?,
+      name: json['name'] as String?,
+      number: json['number'] as int?,
+      pos: json['pos'] as String?,
+      grid: json['grid'] as String?,
+    );
+
+Map<String, dynamic> _$$PlayerImplToJson(_$PlayerImpl instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'name': instance.name,
+      'number': instance.number,
+      'pos': instance.pos,
+      'grid': instance.grid,
+    };
+
+_$TeamImpl _$$TeamImplFromJson(Map<String, dynamic> json) => _$TeamImpl(
+      id: json['id'] as int?,
+      name: json['name'] as String?,
+      logo: json['logo'] as String?,
+      colors: json['colors'] == null
+          ? null
+          : Colors.fromJson(json['colors'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$$TeamImplToJson(_$TeamImpl instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'name': instance.name,
+      'logo': instance.logo,
+      'colors': instance.colors?.toJson(),
+    };
+
+_$ColorsImpl _$$ColorsImplFromJson(Map<String, dynamic> json) => _$ColorsImpl(
+      player: json['player'] == null
+          ? null
+          : Goalkeeper.fromJson(json['player'] as Map<String, dynamic>),
+      goalkeeper: json['goalkeeper'] == null
+          ? null
+          : Goalkeeper.fromJson(json['goalkeeper'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$$ColorsImplToJson(_$ColorsImpl instance) =>
+    <String, dynamic>{
+      'player': instance.player?.toJson(),
+      'goalkeeper': instance.goalkeeper?.toJson(),
+    };
+
+_$GoalkeeperImpl _$$GoalkeeperImplFromJson(Map<String, dynamic> json) =>
+    _$GoalkeeperImpl(
+      primary: json['primary'] as String?,
+      number: json['number'] as String?,
+      border: json['border'] as String?,
+    );
+
+Map<String, dynamic> _$$GoalkeeperImplToJson(_$GoalkeeperImpl instance) =>
+    <String, dynamic>{
+      'primary': instance.primary,
+      'number': instance.number,
+      'border': instance.border,
+    };

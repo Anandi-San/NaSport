@@ -4,12 +4,13 @@ import 'package:papb_aplication/presentation/widgets/listklasnem.dart';
 import 'package:papb_aplication/data/model/klasmenttest/fixtures.dart';
 
 class StandingPage extends StatelessWidget {
+  // final SoccerMatch soccerMatch;
   final List<Standing> fixtures;
   const StandingPage({Key? key, required this.fixtures}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    print("fixtures: $fixtures");
+    // print("fixtures: $fixtures");
     return Scaffold(
       backgroundColor: const Color(0xFFD21312),
       body: SingleChildScrollView(
@@ -114,7 +115,7 @@ class StandingPage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            Center(
+            const Center(
               child: Column(
                 crossAxisAlignment:
                     CrossAxisAlignment.start, // Mengatur konten ke kiri
@@ -135,7 +136,7 @@ class StandingPage extends StatelessWidget {
             Container(
               width: double.infinity,
               height: 1,
-              color: Color.fromARGB(255, 255, 255, 255),
+              color: const Color.fromARGB(255, 255, 255, 255),
             ),
             ListView.builder(
               shrinkWrap: true,
@@ -149,7 +150,6 @@ class StandingPage extends StatelessWidget {
                 final int d = standing.all?.draw ?? 0;
                 final int l = standing.all?.lose ?? 0;
                 final int pts = standing.points ?? 0;
-
                 return Container(
                   margin:
                       const EdgeInsets.symmetric(vertical: 3.0, horizontal: 10),

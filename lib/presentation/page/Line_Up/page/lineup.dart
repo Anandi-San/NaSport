@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
+import 'package:papb_aplication/data/model/soccermodel.dart';
 import 'package:papb_aplication/presentation/page/Homescreen/views/homescreen.dart';
-// import 'package:papb_aplication/presentation/page/MatchDetail/matchdetail.dart';
+import 'package:papb_aplication/presentation/page/MatchDetail/matchdetail.dart';
 import 'package:papb_aplication/presentation/widgets/lineup.dart';
 
 class LineUp extends StatefulWidget {
-  const LineUp({Key? key})
-      : super(key: key); // Variabel untuk melacak tampilan lineup
+  final SoccerMatch soccerMatchlineup;
+  const LineUp({Key? key, required this.soccerMatchlineup})
+      : super(key: key); 
 
   @override
   LineUpAppState createState() =>
-      LineUpAppState(); // public klau pakai - itu private
+      LineUpAppState(); 
 }
 
 class LineUpAppState extends State<LineUp> {
@@ -384,8 +385,8 @@ class LineUpAppState extends State<LineUp> {
                 borderRadius: BorderRadius.circular(16.0),
               ),
             ),
-            Image.asset(
-              "assets/flag/arsenal.png",
+            Image.network(
+              widget.soccerMatchlineup.home.logoUrl,
               width: 80,
               height: 80,
               fit: BoxFit.contain,
@@ -413,10 +414,10 @@ class LineUpAppState extends State<LineUp> {
                 borderRadius: BorderRadius.circular(16.0),
               ),
             ),
-            Image.asset(
-              "assets/flag/mu1.png",
-              width: 140,
-              height: 140,
+            Image.network(
+              widget.soccerMatchlineup.away.logoUrl,
+              width: 80,
+              height: 80,
               fit: BoxFit.contain,
             ),
           ],
@@ -426,22 +427,47 @@ class LineUpAppState extends State<LineUp> {
   }
 
   Widget _buildFullTimeScore() {
-    return const Expanded(
-      child: Center(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        const Text(
+          "Full Time",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        Row(
           children: [
+            // SizedBox(
+            //   width: 30, // Sesuaikan dengan lebar yang Anda inginkan
+            // ),
             Text(
-              "Full Time",
-              style: TextStyle(
+              "${widget.soccerMatchlineup.goal.home}",
+              style: const TextStyle(
                 color: Colors.white,
-                fontSize: 22,
+                fontSize: 45,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            Text(
-              "3 - 1",
+            const SizedBox(
+              width: 30, // Sesuaikan dengan lebar yang Anda inginkan
+            ),
+            const Text(
+              "-",
               style: TextStyle(
+                color: Colors.white,
+                fontSize: 45,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(
+              width: 30, // Sesuaikan dengan lebar yang Anda inginkan
+            ),
+            Text(
+              "${widget.soccerMatchlineup.goal.away}",
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 45,
                 fontWeight: FontWeight.bold,
@@ -449,10 +475,9 @@ class LineUpAppState extends State<LineUp> {
             ),
           ],
         ),
-      ),
+      ],
     );
   }
-
   Widget _buildButtonRow() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -463,12 +488,13 @@ class LineUpAppState extends State<LineUp> {
                 right: 8.0, left: 8.0), // Jarak 8.0 di semua sisi tombol
             child: ElevatedButton(
               onPressed: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //       builder: (context) =>  MatchDetailPage(
-                //         indexmatch: index)),
-                // );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => MatchDetailPage(
+                        soccerMatch: widget.soccerMatchlineup,
+                        )),
+                );
               },
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size(150, 60),

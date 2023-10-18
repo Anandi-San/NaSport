@@ -1,34 +1,37 @@
 import 'dart:convert';
-
 import 'package:http/http.dart';
-// import 'package:papb_aplication/data/model/soccermodel.dart';
-import 'package:papb_aplication/data/model/statistic.dart';
+import 'package:papb_aplication/data/model/klasment.dart';
+import 'package:papb_aplication/data/model/soccermodel.dart';
+// import 'soccer_api.dart';
 
-class SoccerApi {
-  final String apiUrl =
-      "  https://v3.football.api-sports.io/fixtures/statistics?season=2023&league=39";
-  static const headers = {
-    'x-rapidapi-host': "v3.football.api-sports.io",
-    'x-rapidapi-key': "e93a90553f65e6ae949c27992ab9e7b2",
+class StatisticApi {
+  final String apiKey = "e93a90553f65e6ae949c27992ab9e7b2";
+  static const baseUrl = "https://v3.football.api-sports.io";
 
-  };
+  Future<List<Statistic>> getStatisticsForSelectedFixtureAndTeam(
+      int selectedFixtureId, int selectedTeamId) async {
+    final String apiUrl =
+        "$baseUrl/fixtures/statistics?fixture=$selectedFixtureId&team=$selectedTeamId";
 
-  Future<List<StatisticTeam>> getAllMatches() async {
     final Uri uri = Uri.parse(apiUrl);
+    final Map<String, String> headers = {
+      'x-rapidapi-host': "v3.football.api-sports.io",
+      'x-rapidapi-key': apiKey,
+    };
+
     Response res = await get(uri, headers: headers);
     var body;
 
     if (res.statusCode == 200) {
       body = jsonDecode(res.body);
       List<dynamic> statisticsList = body['response'];
-      // print("Api service: ${body}");
-      List<StatisticTeam> statistics = statisticsList
-          .map((dynamic item) => StatisticTeam.fromJson(item))
+      List<Statistic> statistics = statisticsList
+          .map((dynamic item) => Statistic.fromJson(item))
           .toList();
 
       return statistics;
     } else {
-      return <StatisticTeam>[];
+      return <Statistic>[];
     }
   }
 }

@@ -26,10 +26,8 @@ class ListKlasmen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(
-        top: 10,
-        // right: 2,
-        // left: 10,
-        bottom: 10,
+        top: 5,
+        bottom: 5,
       ),
       child: Row(
         children: [

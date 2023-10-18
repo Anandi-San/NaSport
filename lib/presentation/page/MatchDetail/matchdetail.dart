@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:papb_aplication/data/model/soccermodel.dart';
 import 'package:papb_aplication/presentation/page/Homescreen/views/homescreen.dart';
 import 'package:papb_aplication/presentation/page/Line_Up/page/lineup.dart';
-// import 'package:papb_aplication/presentation/page/Line_Up/page/lineuppage.dart';
 
 class MatchDetailPage extends StatefulWidget {
   final SoccerMatch soccerMatch;
@@ -244,15 +243,15 @@ class MatchDetailState extends State<MatchDetailPage> {
         ),
         Expanded(
           child: Padding(
-            padding: const EdgeInsets.only(
-                left: 8.0, right: 8.0), // Jarak 8.0 di semua sisi tombol
+            padding: const EdgeInsets.only(left: 8.0, right: 8.0),
             child: ElevatedButton(
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) =>
-                          const LineUp()), // Ganti dengan nama kelas LineUp yang sesuai
+                      builder: (context) => LineUp(
+                            soccerMatchlineup: widget.soccerMatch,
+                          )),
                 );
               },
               style: ElevatedButton.styleFrom(
