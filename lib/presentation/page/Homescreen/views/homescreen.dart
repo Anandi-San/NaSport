@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+// import 'package:papb_aplication/data/model/Fixtures/fixture.dart';
+import 'package:papb_aplication/data/model/Fixturess/fixture.dart';
 import 'package:papb_aplication/data/model/klasmenttest/fixtures.dart';
 import 'package:papb_aplication/data/model/soccermodel.dart';
 import 'package:papb_aplication/data/source/api.manager.dart';
 import 'package:papb_aplication/data/source/standingapi.dart';
+import 'package:papb_aplication/data/source/statistic.dart';
 import 'package:papb_aplication/presentation/page/MatchDetail/matchdetail.dart';
 import 'package:papb_aplication/presentation/page/standing/standing.dart';
 import 'package:papb_aplication/presentation/widgets/listklasnem.dart';
@@ -16,22 +19,20 @@ class Screennn extends StatefulWidget {
 class HomeScreenState extends State<Screennn> {
   final SoccerApi soccerApi = SoccerApi();
 
-  // List<SoccerMatch>? matches;
+// List<SoccerMatchh>? matches;
 
-  Future<List<SoccerMatch>> fetchData() async {
-    final matchesData = await soccerApi.getAllMatches();
-    if (matchesData.isNotEmpty) {
-      return matchesData;
-    } else {
-      return [];
-    }
-  }
+Future<List<SoccerMatch>> fetchData() async {
+  List<SoccerMatch> matches = await soccerApi.getAllMatches();
+  return matches;
+}
 
   final StandingApi standingApi = StandingApi();
 
   Future<Fixtures> fetchDataStanding() async {
     return await standingApi.getAllFixtures();
   }
+
+  final StatisticApi statisticApi = StatisticApi();
 
   @override
   Widget build(BuildContext context) {
@@ -47,12 +48,13 @@ class HomeScreenState extends State<Screennn> {
       body: SingleChildScrollView(
         child: Padding(
           padding:
-              EdgeInsets.symmetric(horizontal: screenWidth < 1000 ? 10 : 250),
+              EdgeInsets.symmetric(horizontal: screenWidth < 1000 ? 10 : 250, vertical: 35.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
+                height: 40,
                 child: Text(
                   "NaSport",
                   style: TextStyle(
@@ -125,15 +127,18 @@ class HomeScreenState extends State<Screennn> {
                             itemBuilder: (context, index) {
                               return GestureDetector(
                                 onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => MatchDetailPage(
-                                        soccerMatch: matches[index],
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => MatchDetailPage(
+                                          soccerMatch: matches[index],
+                                          fixtureId: matches[index].fixture?.id ?? 0,
+                                          hometeamId: matches[index].home?.id ?? 0,
+                                          awayteamId: matches[index].away?.id ?? 0,
+                                        ),
                                       ),
-                                    ),
-                                  );
-                                },
+                                    );
+                                    },
                                 child: Container(
                                   width: 150,
                                   height: 150,
@@ -149,7 +154,7 @@ class HomeScreenState extends State<Screennn> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
-                                        matches[index].leagues.round,
+                                        "${matches[index].leagues?.round ?? 0}",
                                         style: const TextStyle(
                                           color: Colors.white,
                                           fontSize: 16.0,
@@ -161,7 +166,7 @@ class HomeScreenState extends State<Screennn> {
                                             MainAxisAlignment.center,
                                         children: [
                                           Image.network(
-                                            matches[index].home.logoUrl,
+                                           "${matches[index].home?.logoUrl ?? 0}",
                                             width: 45,
                                             height: 45,
                                           ),
@@ -175,7 +180,7 @@ class HomeScreenState extends State<Screennn> {
                                           ),
                                           const SizedBox(width: 10),
                                           Image.network(
-                                            matches[index].away.logoUrl,
+                                            "${matches[index].away?.logoUrl ?? 0}",
                                             width: 45,
                                             height: 45,
                                           ),
@@ -187,7 +192,7 @@ class HomeScreenState extends State<Screennn> {
                                         child: Row(
                                           children: [
                                             Text(
-                                              matches[index].home.name,
+                                              "${matches[index].home?.name ?? 0}",
                                               style: const TextStyle(
                                                 color: Colors.white,
                                                 fontSize: 14,
@@ -195,7 +200,7 @@ class HomeScreenState extends State<Screennn> {
                                             ),
                                             const Spacer(),
                                             Text(
-                                              "${matches[index].goal.home ?? 0}",
+                                              "${matches[index].goal?.home ?? 0}",
                                               style: const TextStyle(
                                                 color: Colors.white,
                                                 fontSize: 14,
@@ -210,7 +215,7 @@ class HomeScreenState extends State<Screennn> {
                                         child: Row(
                                           children: [
                                             Text(
-                                              matches[index].away.name,
+                                              "${matches[index].away?.name ?? 0}",
                                               style: const TextStyle(
                                                 color: Colors.white,
                                                 fontSize: 14,
@@ -218,7 +223,7 @@ class HomeScreenState extends State<Screennn> {
                                             ),
                                             const Spacer(),
                                             Text(
-                                              "${matches[index].goal.away ?? 0}",
+                                              "${matches[index].goal?.away ?? 0}",
                                               style: const TextStyle(
                                                 color: Colors.white,
                                                 fontSize: 14,

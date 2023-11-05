@@ -3,9 +3,21 @@ import 'package:papb_aplication/data/model/soccermodel.dart';
 import 'package:papb_aplication/presentation/page/Homescreen/views/homescreen.dart';
 import 'package:papb_aplication/presentation/page/Line_Up/page/lineup.dart';
 
+import '../../../data/model/statistics/statistics.dart';
+import '../../../data/source/statistic.dart';
+
 class MatchDetailPage extends StatefulWidget {
   final SoccerMatch soccerMatch;
-  const MatchDetailPage({Key? key, required this.soccerMatch})
+  final int fixtureId;
+  final int hometeamId;
+  final int awayteamId;
+
+  const MatchDetailPage(
+      {Key? key,
+      required this.soccerMatch,
+      required this.fixtureId,
+      required this.hometeamId,
+      required this.awayteamId})
       : super(key: key);
 
   @override
@@ -13,6 +25,31 @@ class MatchDetailPage extends StatefulWidget {
 }
 
 class MatchDetailState extends State<MatchDetailPage> {
+  late Future<Statictics> statistics;
+  @override
+  void initState() {
+    super.initState();
+    statistics = getStatistics();
+    statistics = getStatistic();
+  }
+
+  Future<Statictics> getStatistics() async {
+    StatisticApi statisticApi = StatisticApi();
+    return await statisticApi.getStatisticsForSelectedFixtureAndTeam(
+      selectedFixtureId: widget.fixtureId,
+      selectedTeamId: widget.hometeamId,
+    );
+  }
+
+  Future<Statictics> getStatistic() async {
+    StatisticApi statisticApi = StatisticApi();
+    return await statisticApi.getStatisticsForSelectedFixtureAndTeam(
+      selectedFixtureId: widget.fixtureId,
+      selectedTeamId: widget.awayteamId,
+      // selectedTeamId: wid
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,26 +115,225 @@ class MatchDetailState extends State<MatchDetailPage> {
             ),
             const SizedBox(height: 20),
             _buildButtonRow(),
-            const SizedBox(height: 20),
-            _buildShots(),
-            const SizedBox(height: 20),
-            _buildShotsOnTarget(),
-            const SizedBox(height: 20),
-            _buildPossession(),
-            const SizedBox(height: 20),
-            _buildPasses(),
-            const SizedBox(height: 20),
-            _buildPassAcuraccy(),
-            const SizedBox(height: 20),
-            _buildFouls(),
-            const SizedBox(height: 20),
-            _buildYellowCard(),
-            const SizedBox(height: 20),
-            _buildRedCard(),
-            const SizedBox(height: 20),
-            _buildOffsides(),
-            const SizedBox(height: 20),
-            _buildCorners(),
+            FutureBuilder<Statictics>(
+              future: getStatistics(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const CircularProgressIndicator(); // Or a loading indicator
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else {
+                  Statictics data1 = snapshot.data!;
+                  return FutureBuilder(
+                      future: getStatistic(),
+                      builder: (context, response) {
+                        if (response.connectionState ==
+                            ConnectionState.waiting) {
+                          return const CircularProgressIndicator(); // Or a loading indicator
+                        } else if (response.hasError) {
+                          return Text('Error: ${response.error}');
+                        } else {
+                          Statictics data2 = response.data!;
+                          // print("data2: ${data2.response}");
+                          return Column(
+                            children: [
+                              const SizedBox(height: 20),
+                              _buildShots(
+                                   data1.response != null &&
+                                        data1.response![0].statistics != null &&
+                                        data1.response![0].statistics![2]
+                                                .value !=
+                                            null
+                                    ? data1.response![0].statistics![2].value
+                                        .toString()
+                                    : '0',
+                                data2.response != null &&
+                                        data2.response![0].statistics != null &&
+                                        data2.response![0].statistics![2]
+                                                .value !=
+                                            null
+                                    ? data2.response![0].statistics![2].value
+                                        .toString()
+                                    : '0',
+                              ),
+                              const SizedBox(height: 20),
+                              _buildShotsOnTarget(
+                                  data1.response != null &&
+                                        data1.response![0].statistics != null &&
+                                        data1.response![0].statistics![0]
+                                                .value !=
+                                            null
+                                    ? data1.response![0].statistics![0].value
+                                        .toString()
+                                    : '0',
+                                data2.response != null &&
+                                        data2.response![0].statistics != null &&
+                                        data2.response![0].statistics![0]
+                                                .value !=
+                                            null
+                                    ? data2.response![0].statistics![0].value
+                                        .toString()
+                                    : '0',
+                              ),
+                              const SizedBox(height: 20),
+                              _buildPossession(
+                                  data1.response != null &&
+                                        data1.response![0].statistics != null &&
+                                        data1.response![0].statistics![9]
+                                                .value !=
+                                            null
+                                    ? data1.response![0].statistics![9].value
+                                        .toString()
+                                    : '0',
+                                data2.response != null &&
+                                        data2.response![0].statistics != null &&
+                                        data2.response![0].statistics![9]
+                                                .value !=
+                                            null
+                                    ? data2.response![0].statistics![9].value
+                                        .toString()
+                                    : '0',
+                              ),
+                              const SizedBox(height: 20),
+                              _buildPasses(
+                                  data1.response != null &&
+                                        data1.response![0].statistics != null &&
+                                        data1.response![0].statistics![13]
+                                                .value !=
+                                            null
+                                    ? data1.response![0].statistics![13].value
+                                        .toString()
+                                    : '0',
+                                data2.response != null &&
+                                        data2.response![0].statistics != null &&
+                                        data2.response![0].statistics![13]
+                                                .value !=
+                                            null
+                                    ? data2.response![0].statistics![13].value
+                                        .toString()
+                                    : '0',
+                              ),
+                              const SizedBox(height: 20),
+                              _buildPassAcuraccy(
+                                  data1.response != null &&
+                                        data1.response![0].statistics != null &&
+                                        data1.response![0].statistics![14]
+                                                .value !=
+                                            null
+                                    ? data1.response![0].statistics![14].value
+                                        .toString()
+                                    : '0',
+                                data2.response != null &&
+                                        data2.response![0].statistics != null &&
+                                        data2.response![0].statistics![14]
+                                                .value !=
+                                            null
+                                    ? data2.response![0].statistics![14].value
+                                        .toString()
+                                    : '0',
+                              ),
+                              const SizedBox(height: 20),
+                              _buildFouls(
+                                  data1.response != null &&
+                                        data1.response![0].statistics != null &&
+                                        data1.response![0].statistics![6]
+                                                .value !=
+                                            null
+                                    ? data1.response![0].statistics![6].value
+                                        .toString()
+                                    : '0',
+                                data2.response != null &&
+                                        data2.response![0].statistics != null &&
+                                        data2.response![0].statistics![6]
+                                                .value !=
+                                            null
+                                    ? data2.response![0].statistics![6].value
+                                        .toString()
+                                    : '0',
+                              ),
+                              const SizedBox(height: 20),
+                              _buildYellowCard(
+                                data1.response != null &&
+                                        data1.response![0].statistics != null &&
+                                        data1.response![0].statistics![11]
+                                                .value !=
+                                            null
+                                    ? data1.response![0].statistics![11].value
+                                        .toString()
+                                    : '0',
+                                data2.response != null &&
+                                        data2.response![0].statistics != null &&
+                                        data2.response![0].statistics![10]
+                                                .value !=
+                                            null
+                                    ? data2.response![0].statistics![10].value
+                                        .toString()
+                                    : '0',
+                              ),
+                              const SizedBox(height: 20),
+                              _buildRedCard(
+                                data1.response != null &&
+                                        data1.response![0].statistics != null &&
+                                        data1.response![0].statistics![11]
+                                                .value !=
+                                            null
+                                    ? data1.response![0].statistics![11].value
+                                        .toString()
+                                    : '0',
+                                data2.response != null &&
+                                        data2.response![0].statistics != null &&
+                                        data2.response![0].statistics![11]
+                                                .value !=
+                                            null
+                                    ? data2.response![0].statistics![11].value
+                                        .toString()
+                                    : '0',
+                              ),
+                              const SizedBox(height: 20),
+                              _buildOffsides(
+                                  data1.response != null &&
+                                        data1.response![0].statistics != null &&
+                                        data1.response![0].statistics![8]
+                                                .value !=
+                                            null
+                                    ? data1.response![0].statistics![8].value
+                                        .toString()
+                                    : '0',
+                                data2.response != null &&
+                                        data2.response![0].statistics != null &&
+                                        data2.response![0].statistics![8]
+                                                .value !=
+                                            null
+                                    ? data2.response![0].statistics![8].value
+                                        .toString()
+                                    : '0',
+                              ),
+                              const SizedBox(height: 20),
+                              _buildCorners(
+                                  data1.response != null &&
+                                        data1.response![0].statistics != null &&
+                                        data1.response![0].statistics![7]
+                                                .value !=
+                                            null
+                                    ? data1.response![0].statistics![7].value
+                                        .toString()
+                                    : '0',
+                                data2.response != null &&
+                                        data2.response![0].statistics != null &&
+                                        data2.response![0].statistics![7]
+                                                .value !=
+                                            null
+                                    ? data2.response![0].statistics![7].value
+                                        .toString()
+                                    : '0',
+                              ),
+                            ],
+                          );
+                        }
+                      });
+                }
+              },
+            ),
           ],
         ),
       ),
@@ -122,7 +358,7 @@ class MatchDetailState extends State<MatchDetailPage> {
               ),
             ),
             Image.network(
-              widget.soccerMatch.home.logoUrl,
+              "${widget.soccerMatch.home?.logoUrl}",
               width: 80,
               height: 80,
               fit: BoxFit.contain,
@@ -151,7 +387,7 @@ class MatchDetailState extends State<MatchDetailPage> {
             //   width: 30, // Sesuaikan dengan lebar yang Anda inginkan
             // ),
             Text(
-              "${widget.soccerMatch.goal.home}",
+              "${widget.soccerMatch.goal?.home}",
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 45,
@@ -173,7 +409,7 @@ class MatchDetailState extends State<MatchDetailPage> {
               width: 30, // Sesuaikan dengan lebar yang Anda inginkan
             ),
             Text(
-              "${widget.soccerMatch.goal.away}",
+              "${widget.soccerMatch.goal?.away}",
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 45,
@@ -204,7 +440,7 @@ class MatchDetailState extends State<MatchDetailPage> {
               ),
             ),
             Image.network(
-              widget.soccerMatch.away.logoUrl,
+              "${widget.soccerMatch.away?.logoUrl}",
               width: 80,
               height: 80,
               fit: BoxFit.contain,
@@ -251,6 +487,7 @@ class MatchDetailState extends State<MatchDetailPage> {
                   MaterialPageRoute(
                       builder: (context) => LineUp(
                             soccerMatchlineup: widget.soccerMatch,
+                            fixtureId: widget.fixtureId,
                           )),
                 );
               },
@@ -273,394 +510,404 @@ class MatchDetailState extends State<MatchDetailPage> {
       ],
     );
   }
+}
 
-  Widget _buildShots() {
-    return const Row(
-      children: [
-        Padding(
-          padding: EdgeInsets.only(left: 20.0), // Padding 20 ke ujung kiri
-          child: Text(
-            "10",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-        Spacer(), // Spacer untuk memberikan jarak fleksibel
-        Text(
-          "Shots",
-          style: TextStyle(
+Widget _buildShots(String tim1, String tim2) {
+  return Row(
+    children: [
+      Padding(
+        padding: const EdgeInsets.only(left: 20.0), // Padding 20 ke ujung kiri
+        child: Text(
+          tim1,
+          style: const TextStyle(
             color: Colors.white,
             fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
         ),
-        Spacer(), // Spacer untuk memberikan jarak fleksibel
-        Padding(
-          padding: EdgeInsets.only(right: 20.0), // Padding 20 ke ujung kanan
-          child: Text(
-            "12",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+      ),
+      const Spacer(), // Spacer untuk memberikan jarak fleksibel
+      const Text(
+        "Shots",
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
         ),
-      ],
-    );
-  }
-
-  Widget _buildShotsOnTarget() {
-    return const Row(
-      children: [
-        Padding(
-          padding: EdgeInsets.only(left: 20.0), // Padding 20 ke ujung kiri
-          child: Text(
-            "10",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-        Spacer(), // Spacer untuk memberikan jarak fleksibel
-        Text(
-          "Shots On Target",
-          style: TextStyle(
+      ),
+      const Spacer(), // Spacer untuk memberikan jarak fleksibel
+      Padding(
+        padding:
+            const EdgeInsets.only(right: 20.0), // Padding 20 ke ujung kanan
+        child: Text(
+          tim2,
+          style: const TextStyle(
             color: Colors.white,
             fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
         ),
-        Spacer(), // Spacer untuk memberikan jarak fleksibel
-        Padding(
-          padding: EdgeInsets.only(right: 20.0), // Padding 20 ke ujung kanan
-          child: Text(
-            "12",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
+      ),
+    ],
+  );
+}
 
-  Widget _buildPossession() {
-    return const Row(
-      children: [
-        Padding(
-          padding: EdgeInsets.only(left: 20.0), // Padding 20 ke ujung kiri
-          child: Text(
-            "10",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-        Spacer(), // Spacer untuk memberikan jarak fleksibel
-        Text(
-          "Possession",
-          style: TextStyle(
+Widget _buildShotsOnTarget(String tim1, String tim2) {
+  return Row(
+    children: [
+      Padding(
+        padding: const EdgeInsets.only(left: 20.0), // Padding 20 ke ujung kiri
+        child: Text(
+          tim1,
+          style: const TextStyle(
             color: Colors.white,
             fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
         ),
-        Spacer(), // Spacer untuk memberikan jarak fleksibel
-        Padding(
-          padding: EdgeInsets.only(right: 20.0), // Padding 20 ke ujung kanan
-          child: Text(
-            "12" + "%",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+      ),
+      const Spacer(), // Spacer untuk memberikan jarak fleksibel
+      const Text(
+        "Shots On Target",
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
         ),
-      ],
-    );
-  }
-
-  Widget _buildPasses() {
-    return const Row(
-      children: [
-        Padding(
-          padding: EdgeInsets.only(left: 20.0), // Padding 20 ke ujung kiri
-          child: Text(
-            "10",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-        Spacer(), // Spacer untuk memberikan jarak fleksibel
-        Text(
-          "Passes",
-          style: TextStyle(
+      ),
+      const Spacer(), // Spacer untuk memberikan jarak fleksibel
+      Padding(
+        padding:
+            const EdgeInsets.only(right: 20.0), // Padding 20 ke ujung kanan
+        child: Text(
+          tim2,
+          style: const TextStyle(
             color: Colors.white,
             fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
         ),
-        Spacer(), // Spacer untuk memberikan jarak fleksibel
-        Padding(
-          padding: EdgeInsets.only(right: 20.0), // Padding 20 ke ujung kanan
-          child: Text(
-            "12",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
+      ),
+    ],
+  );
+}
 
-  Widget _buildPassAcuraccy() {
-    return const Row(
-      children: [
-        Padding(
-          padding: EdgeInsets.only(left: 20.0), // Padding 20 ke ujung kiri
-          child: Text(
-            "10",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-        Spacer(), // Spacer untuk memberikan jarak fleksibel
-        Text(
-          "Pass Accuracy",
-          style: TextStyle(
+Widget _buildPossession(String tim1, String tim2) {
+  return Row(
+    children: [
+      Padding(
+        padding: const EdgeInsets.only(left: 20.0), // Padding 20 ke ujung kiri
+        child: Text(
+          tim1,
+          style: const TextStyle(
             color: Colors.white,
             fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
         ),
-        Spacer(), // Spacer untuk memberikan jarak fleksibel
-        Padding(
-          padding: EdgeInsets.only(right: 20.0), // Padding 20 ke ujung kanan
-          child: Text(
-            "12",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+      ),
+      const Spacer(), // Spacer untuk memberikan jarak fleksibel
+      const Text(
+        "Possession",
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
         ),
-      ],
-    );
-  }
-
-  Widget _buildFouls() {
-    return const Row(
-      children: [
-        Padding(
-          padding: EdgeInsets.only(left: 20.0), // Padding 20 ke ujung kiri
-          child: Text(
-            "10",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-        Spacer(), // Spacer untuk memberikan jarak fleksibel
-        Text(
-          "Fouls",
-          style: TextStyle(
+      ),
+      const Spacer(), // Spacer untuk memberikan jarak fleksibel
+      Padding(
+        padding:
+            const EdgeInsets.only(right: 20.0), // Padding 20 ke ujung kanan
+        child: Text(
+          tim2,
+          style: const TextStyle(
             color: Colors.white,
             fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
         ),
-        Spacer(), // Spacer untuk memberikan jarak fleksibel
-        Padding(
-          padding: EdgeInsets.only(right: 20.0), // Padding 20 ke ujung kanan
-          child: Text(
-            "12",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
+      ),
+    ],
+  );
+}
 
-  Widget _buildYellowCard() {
-    return const Row(
-      children: [
-        Padding(
-          padding: EdgeInsets.only(left: 20.0), // Padding 20 ke ujung kiri
-          child: Text(
-            "10",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-        Spacer(), // Spacer untuk memberikan jarak fleksibel
-        Text(
-          "Yellow Card",
-          style: TextStyle(
+Widget _buildPasses(String tim1, String tim2) {
+  return Row(
+    children: [
+      Padding(
+        padding: const EdgeInsets.only(left: 20.0), // Padding 20 ke ujung kiri
+        child: Text(
+          tim1,
+          style: const TextStyle(
             color: Colors.white,
             fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
         ),
-        Spacer(), // Spacer untuk memberikan jarak fleksibel
-        Padding(
-          padding: EdgeInsets.only(right: 20.0), // Padding 20 ke ujung kanan
-          child: Text(
-            "12",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+      ),
+      const Spacer(), // Spacer untuk memberikan jarak fleksibel
+      const Text(
+        "Passes",
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
         ),
-      ],
-    );
-  }
-
-  Widget _buildRedCard() {
-    return const Row(
-      children: [
-        Padding(
-          padding: EdgeInsets.only(left: 20.0), // Padding 20 ke ujung kiri
-          child: Text(
-            "10",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-        Spacer(), // Spacer untuk memberikan jarak fleksibel
-        Text(
-          "Red Cards",
-          style: TextStyle(
+      ),
+      const Spacer(), // Spacer untuk memberikan jarak fleksibel
+      Padding(
+        padding:
+            const EdgeInsets.only(right: 20.0), // Padding 20 ke ujung kanan
+        child: Text(
+          tim2,
+          style: const TextStyle(
             color: Colors.white,
             fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
         ),
-        Spacer(), // Spacer untuk memberikan jarak fleksibel
-        Padding(
-          padding: EdgeInsets.only(right: 20.0), // Padding 20 ke ujung kanan
-          child: Text(
-            "12",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
+      ),
+    ],
+  );
+}
 
-  Widget _buildOffsides() {
-    return const Row(
-      children: [
-        Padding(
-          padding: EdgeInsets.only(left: 20.0), // Padding 20 ke ujung kiri
-          child: Text(
-            "10",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-        Spacer(), // Spacer untuk memberikan jarak fleksibel
-        Text(
-          "Offsides",
-          style: TextStyle(
+Widget _buildPassAcuraccy(String tim1, String tim2) {
+  return Row(
+    children: [
+      Padding(
+        padding: const EdgeInsets.only(left: 20.0), // Padding 20 ke ujung kiri
+        child: Text(
+          tim1,
+          style: const TextStyle(
             color: Colors.white,
             fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
         ),
-        Spacer(), // Spacer untuk memberikan jarak fleksibel
-        Padding(
-          padding: EdgeInsets.only(right: 20.0), // Padding 20 ke ujung kanan
-          child: Text(
-            "12",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+      ),
+      const Spacer(), // Spacer untuk memberikan jarak fleksibel
+      const Text(
+        "Pass Accuracy",
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
         ),
-      ],
-    );
-  }
-
-  Widget _buildCorners() {
-    return const Row(
-      children: [
-        Padding(
-          padding: EdgeInsets.only(left: 20.0), // Padding 20 ke ujung kiri
-          child: Text(
-            "10",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-        Spacer(), // Spacer untuk memberikan jarak fleksibel
-        Text(
-          "Corners",
-          style: TextStyle(
+      ),
+      const Spacer(), // Spacer untuk memberikan jarak fleksibel
+      Padding(
+        padding:
+            const EdgeInsets.only(right: 20.0), // Padding 20 ke ujung kanan
+        child: Text(
+          tim2,
+          style: const TextStyle(
             color: Colors.white,
             fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
         ),
-        Spacer(), // Spacer untuk memberikan jarak fleksibel
-        Padding(
-          padding: EdgeInsets.only(right: 20.0), // Padding 20 ke ujung kanan
-          child: Text(
-            "12",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
+      ),
+    ],
+  );
+}
+
+Widget _buildFouls(String tim1, String tim2) {
+  return Row(
+    children: [
+      Padding(
+        padding: const EdgeInsets.only(left: 20.0), // Padding 20 ke ujung kiri
+        child: Text(
+          tim1,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
           ),
         ),
-      ],
-    );
-  }
+      ),
+      const Spacer(), // Spacer untuk memberikan jarak fleksibel
+      const Text(
+        "Fouls",
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      const Spacer(), // Spacer untuk memberikan jarak fleksibel
+      Padding(
+        padding:
+            const EdgeInsets.only(right: 20.0), // Padding 20 ke ujung kanan
+        child: Text(
+          tim2,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    ],
+  );
+}
+
+Widget _buildYellowCard(String tim1, String tim2) {
+  return Row(
+    children: [
+      Padding(
+        padding: const EdgeInsets.only(left: 20.0), // Padding 20 ke ujung kiri
+        child: Text(
+          tim1,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+      const Spacer(), // Spacer untuk memberikan jarak fleksibel
+      const Text(
+        "Yellow Card",
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      const Spacer(), // Spacer untuk memberikan jarak fleksibel
+      Padding(
+        padding:
+            const EdgeInsets.only(right: 20.0), // Padding 20 ke ujung kanan
+        child: Text(
+          tim2,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    ],
+  );
+}
+
+Widget _buildRedCard(String tim1, String tim2) {
+  return Row(
+    children: [
+      Padding(
+        padding: const EdgeInsets.only(left: 20.0), // Padding 20 ke ujung kiri
+        child: Text(
+          tim1,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+      const Spacer(), // Spacer untuk memberikan jarak fleksibel
+      const Text(
+        "Red Cards",
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      const Spacer(), // Spacer untuk memberikan jarak fleksibel
+      Padding(
+        padding:
+            const EdgeInsets.only(right: 20.0), // Padding 20 ke ujung kanan
+        child: Text(
+          tim2,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    ],
+  );
+}
+
+Widget _buildOffsides(String tim1, String tim2) {
+  return Row(
+    children: [
+      Padding(
+        padding: const EdgeInsets.only(left: 20.0), // Padding 20 ke ujung kiri
+        child: Text(
+          tim1,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+      const Spacer(), // Spacer untuk memberikan jarak fleksibel
+      const Text(
+        "Offsides",
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      const Spacer(), // Spacer untuk memberikan jarak fleksibel
+      Padding(
+        padding:
+            const EdgeInsets.only(right: 20.0), // Padding 20 ke ujung kanan
+        child: Text(
+          tim2,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    ],
+  );
+}
+
+Widget _buildCorners(String tim1, String tim2) {
+  return Row(
+    children: [
+      Padding(
+        padding: const EdgeInsets.only(left: 20.0), // Padding 20 ke ujung kiri
+        child: Text(
+          tim1,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+      const Spacer(), // Spacer untuk memberikan jarak fleksibel
+      const Text(
+        "Corners",
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      const Spacer(), // Spacer untuk memberikan jarak fleksibel
+      Padding(
+        padding:
+            const EdgeInsets.only(right: 20.0), // Padding 20 ke ujung kanan
+        child: Text(
+          tim2,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    ],
+  );
 }

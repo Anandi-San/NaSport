@@ -140,6 +140,7 @@ class StandingPage extends StatelessWidget {
             ),
             ListView.builder(
               shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
               itemCount: fixtures.length,
               itemBuilder: (context, index) {
                 final Standing standing = fixtures[index];

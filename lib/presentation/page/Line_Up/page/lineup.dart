@@ -1,23 +1,41 @@
 import 'package:flutter/material.dart';
+// import 'package:papb_aplication/data/model/Fixtures/fixture.dart';
+import 'package:papb_aplication/data/model/Fixturess/fixture.dart';
 import 'package:papb_aplication/data/model/soccermodel.dart';
+import 'package:papb_aplication/data/model/standding.dart';
+import 'package:papb_aplication/data/source/lineup.dart';
 import 'package:papb_aplication/presentation/page/Homescreen/views/homescreen.dart';
 import 'package:papb_aplication/presentation/page/MatchDetail/matchdetail.dart';
 import 'package:papb_aplication/presentation/widgets/lineup.dart';
 
 class LineUp extends StatefulWidget {
   final SoccerMatch soccerMatchlineup;
-  const LineUp({Key? key, required this.soccerMatchlineup})
-      : super(key: key); 
+  final int fixtureId;
+  const LineUp(
+      {Key? key, required this.soccerMatchlineup, required this.fixtureId})
+      : super(key: key);
 
   @override
-  LineUpAppState createState() =>
-      LineUpAppState(); 
+  LineUpAppState createState() => LineUpAppState();
 }
 
 class LineUpAppState extends State<LineUp> {
+  late Future<List<Klasment>> standing;
   bool _showLineup1 = true;
   bool _showLineup2 = false;
 
+  @override
+  void initState() {
+    super.initState();
+    standing = getAllLineup();
+  }
+
+  Future<List<Klasment>> getAllLineup() async {
+    LineupApi lineupapi = LineupApi(selectedfixture: widget.fixtureId);
+    return await lineupapi.getAllLineup();
+  }
+
+  @override
   Widget _buildButton() {
     return Padding(
       padding: const EdgeInsets.only(left: 10.0),
@@ -134,7 +152,10 @@ class LineUpAppState extends State<LineUp> {
                     itemCount: 11,
                     itemBuilder: (BuildContext context, int index) {
                       return LineUpcomponent(
-                          number: "${index + 1}", name: "Player ${index + 1}", BackgroundColor: "",);
+                        number: "${index + 1}",
+                        name: "Player ${index + 1}",
+                        BackgroundColor: "",
+                      );
                     },
                   ),
                 ),
@@ -163,7 +184,9 @@ class LineUpAppState extends State<LineUp> {
                             .toString(); // Nomor dapat diambil dari indeks + 1
                         final playerName = "Pemain ${index + 1}";
                         return LineUpcomponent(
-                            number: number, name: playerName, BackgroundColor: "");
+                            number: number,
+                            name: playerName,
+                            BackgroundColor: "");
                       }),
                 ),
               ],
@@ -230,7 +253,11 @@ class LineUpAppState extends State<LineUp> {
                     itemBuilder: (BuildContext context, int index) {
                       final number = (index + 1).toString();
                       final playerName = "Pemain ${index + 1}";
-                      return LineUpcomponent(number: number, name: playerName, BackgroundColor: "",);
+                      return LineUpcomponent(
+                        number: number,
+                        name: playerName,
+                        BackgroundColor: "",
+                      );
                     },
                   ),
                 ),
@@ -386,7 +413,7 @@ class LineUpAppState extends State<LineUp> {
               ),
             ),
             Image.network(
-              widget.soccerMatchlineup.home.logoUrl,
+              "${widget.soccerMatchlineup.home?.logoUrl}",
               width: 80,
               height: 80,
               fit: BoxFit.contain,
@@ -415,7 +442,7 @@ class LineUpAppState extends State<LineUp> {
               ),
             ),
             Image.network(
-              widget.soccerMatchlineup.away.logoUrl,
+              "${widget.soccerMatchlineup.away?.logoUrl}",
               width: 80,
               height: 80,
               fit: BoxFit.contain,
@@ -444,7 +471,7 @@ class LineUpAppState extends State<LineUp> {
             //   width: 30, // Sesuaikan dengan lebar yang Anda inginkan
             // ),
             Text(
-              "${widget.soccerMatchlineup.goal.home}",
+              "${widget.soccerMatchlineup.goal?.home}",
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 45,
@@ -466,7 +493,7 @@ class LineUpAppState extends State<LineUp> {
               width: 30, // Sesuaikan dengan lebar yang Anda inginkan
             ),
             Text(
-              "${widget.soccerMatchlineup.goal.away}",
+              "${widget.soccerMatchlineup.goal?.away}",
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 45,
@@ -478,6 +505,7 @@ class LineUpAppState extends State<LineUp> {
       ],
     );
   }
+
   Widget _buildButtonRow() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -492,8 +520,11 @@ class LineUpAppState extends State<LineUp> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => MatchDetailPage(
-                        soccerMatch: widget.soccerMatchlineup,
-                        )),
+                            soccerMatch: widget.soccerMatchlineup,
+                            fixtureId: 0,
+                            hometeamId: 0,
+                            awayteamId: 0,
+                          )),
                 );
               },
               style: ElevatedButton.styleFrom(

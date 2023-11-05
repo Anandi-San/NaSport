@@ -1,15 +1,13 @@
 import 'dart:convert';
-import 'package:http/http.dart';
-import 'package:papb_aplication/data/model/klasment.dart';
-import 'package:papb_aplication/data/model/soccermodel.dart';
-// import 'soccer_api.dart';
+import 'package:http/http.dart' as http;
+import 'package:papb_aplication/data/model/statistics/statistics.dart';
 
 class StatisticApi {
   final String apiKey = "e93a90553f65e6ae949c27992ab9e7b2";
   static const baseUrl = "https://v3.football.api-sports.io";
 
-  Future<List<Statistic>> getStatisticsForSelectedFixtureAndTeam(
-      int selectedFixtureId, int selectedTeamId) async {
+  Future<Statictics> getStatisticsForSelectedFixtureAndTeam(
+      {required int selectedFixtureId, required int selectedTeamId}) async {
     final String apiUrl =
         "$baseUrl/fixtures/statistics?fixture=$selectedFixtureId&team=$selectedTeamId";
 
@@ -19,19 +17,17 @@ class StatisticApi {
       'x-rapidapi-key': apiKey,
     };
 
-    Response res = await get(uri, headers: headers);
-    var body;
+    http.Response response = await http.get(uri, headers: headers);
+    print("Response status: ${response.statusCode}");
 
-    if (res.statusCode == 200) {
-      body = jsonDecode(res.body);
-      List<dynamic> statisticsList = body['response'];
-      List<Statistic> statistics = statisticsList
-          .map((dynamic item) => Statistic.fromJson(item))
-          .toList();
+    if (response.statusCode == 200) {
+      var body = json.decode(response.body);
+      // print("Response : $body");
+      var statistics = Statictics.fromJson(body);
 
       return statistics;
     } else {
-      return <Statistic>[];
+      throw Exception('Failed to load statistics');
     }
   }
 }

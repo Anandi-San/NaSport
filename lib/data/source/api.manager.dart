@@ -1,6 +1,6 @@
 import 'dart:convert';
-
 import 'package:http/http.dart';
+// import 'package:papb_aplication/data/model/Fixturess/fixture.dart';
 import 'package:papb_aplication/data/model/soccermodel.dart';
 
 class SoccerApi {
@@ -9,25 +9,22 @@ class SoccerApi {
   static const headers = {
     'x-rapidapi-host': "v3.football.api-sports.io",
     'x-rapidapi-key': "e93a90553f65e6ae949c27992ab9e7b2",
-
   };
 
   Future<List<SoccerMatch>> getAllMatches() async {
     final Uri uri = Uri.parse(apiUrl);
-    Response res = await get(uri, headers: headers);
-    var body;
+    final res = await get(uri, headers: headers);
 
     if (res.statusCode == 200) {
-      body = jsonDecode(res.body);
-      List<dynamic> matchesList = body['response'];
-      // print("Api service: ${body}");
+      final body = jsonDecode(res.body);
+      // print("hasil: $body");
+      final List<dynamic> matchesList = body['response'];
       List<SoccerMatch> matches = matchesList
           .map((dynamic item) => SoccerMatch.fromJson(item))
           .toList();
-
       return matches;
     } else {
-      return <SoccerMatch>[];
+      throw Exception("Failed to load fixtures");
     }
   }
 }

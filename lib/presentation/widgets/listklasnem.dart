@@ -28,6 +28,7 @@ class ListKlasmen extends StatelessWidget {
       padding: const EdgeInsets.only(
         top: 5,
         bottom: 5,
+        // left: 5,
       ),
       child: Row(
         children: [
@@ -37,23 +38,26 @@ class ListKlasmen extends StatelessWidget {
               teamName: teamName,
             ),
           if (images == null)
-            Text(
-              teamName , // Tambahkan ?? '' untuk memberikan nilai default jika teamName adalah null atau kosong
-              style: const TextStyle(fontSize: 14, color: Colors.white),
+            Padding(
+              padding: const EdgeInsets.only(left: 10, right: 0, top: 0, bottom: 0),
+              child: Text(
+                teamName , // Tambahkan ?? '' untuk memberikan nilai default jika teamName adalah null atau kosong
+                style: const TextStyle(fontSize: 14, color: Colors.white),
+              ),
             ),
           const Spacer(),
           Row(
             children: [
               ContainerNumber(number: mp),
-              const SizedBox(width: 12),
+              const SizedBox(width: 8),
               ContainerNumber(number: W),
-              const SizedBox(width: 12),
+              const SizedBox(width: 8),
               ContainerNumber(number: D),
-              const SizedBox(width: 12),
+              const SizedBox(width: 8),
               ContainerNumber(number: L),
-              const SizedBox(width: 12),
+              const SizedBox(width: 8),
               ContainerNumber(number: pts),
-              const SizedBox(width: 12),
+              const SizedBox(width: 8),
             ],
           )
         ],
