@@ -1,8 +1,7 @@
+import 'package:flutter/material.dart' as flutter;
 import 'package:flutter/material.dart';
-// import 'package:papb_aplication/data/model/Fixtures/fixture.dart';
-import 'package:papb_aplication/data/model/Fixturess/fixture.dart';
+import 'package:papb_aplication/data/model/Lineup/lineuptim.dart';
 import 'package:papb_aplication/data/model/soccermodel.dart';
-import 'package:papb_aplication/data/model/standding.dart';
 import 'package:papb_aplication/data/source/lineup.dart';
 import 'package:papb_aplication/presentation/page/Homescreen/views/homescreen.dart';
 import 'package:papb_aplication/presentation/page/MatchDetail/matchdetail.dart';
@@ -10,6 +9,7 @@ import 'package:papb_aplication/presentation/widgets/lineup.dart';
 
 class LineUp extends StatefulWidget {
   final SoccerMatch soccerMatchlineup;
+
   final int fixtureId;
   const LineUp(
       {Key? key, required this.soccerMatchlineup, required this.fixtureId})
@@ -20,19 +20,19 @@ class LineUp extends StatefulWidget {
 }
 
 class LineUpAppState extends State<LineUp> {
-  late Future<List<Klasment>> standing;
+  late Future<Lineuptim> lineup;
   bool _showLineup1 = true;
   bool _showLineup2 = false;
 
   @override
   void initState() {
     super.initState();
-    standing = getAllLineup();
+    lineup = getAllLineup();
   }
 
-  Future<List<Klasment>> getAllLineup() async {
-    LineupApi lineupapi = LineupApi(selectedfixture: widget.fixtureId);
-    return await lineupapi.getAllLineup();
+  Future<Lineuptim> getAllLineup() async {
+    LineupApi lineupapi = LineupApi();
+    return await lineupapi.getAllLineup(selectedfixture: widget.fixtureId);
   }
 
   @override
@@ -98,7 +98,8 @@ class LineUpAppState extends State<LineUp> {
     );
   }
 
-  Widget _buildBoxlineup1() {
+  Widget _buildBoxlineup1(data1) {
+    String formation1 = data1.response[0].formation; 
     return Visibility(
       visible: _showLineup1,
       child: Center(
@@ -107,7 +108,7 @@ class LineUpAppState extends State<LineUp> {
           child: Container(
             decoration: BoxDecoration(
               border: Border.all(
-                color: Colors.black,
+                color: flutter.Colors.black,
                 width: 1.0,
               ),
               color: const Color(0xFFF15A59),
@@ -117,14 +118,14 @@ class LineUpAppState extends State<LineUp> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Padding(
-                  padding: EdgeInsets.only(left: 10.0),
+                 Padding(
+                  padding: const EdgeInsets.only(left: 10.0),
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      "Formation",
-                      style: TextStyle(
-                        color: Colors.white,
+                      "Formation: $formation1",
+                      style: const TextStyle(
+                        color: flutter.Colors.white,
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
                       ),
@@ -139,7 +140,7 @@ class LineUpAppState extends State<LineUp> {
                     child: Text(
                       "STARTING IX",
                       style: TextStyle(
-                        color: Colors.white,
+                        color: flutter.Colors.white,
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
@@ -149,11 +150,12 @@ class LineUpAppState extends State<LineUp> {
                 SizedBox(
                   height: 280,
                   child: ListView.builder(
-                    itemCount: 11,
+                    itemCount: data1.response?[0].startXi?.length ?? 0,
                     itemBuilder: (BuildContext context, int index) {
+                      final player = data1.response?[0].startXi?[index];
                       return LineUpcomponent(
-                        number: "${index + 1}",
-                        name: "Player ${index + 1}",
+                        number: player!.player!.number.toString(),
+                        name: player.player!.name.toString(),
                         BackgroundColor: "",
                       );
                     },
@@ -167,7 +169,7 @@ class LineUpAppState extends State<LineUp> {
                     child: Text(
                       "SUBTITUTES",
                       style: TextStyle(
-                        color: Colors.white,
+                        color: flutter.Colors.white,
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
@@ -178,11 +180,12 @@ class LineUpAppState extends State<LineUp> {
                   height:
                       165, // Tinggi sesuaikan agar tidak tumpang tindih dengan "STARTING IX"
                   child: ListView.builder(
-                      itemCount: 7,
+                      itemCount: data1.response?[0].substitutes?.length ?? 0,
                       itemBuilder: (BuildContext context, int index) {
-                        final number = (index + 1)
-                            .toString(); // Nomor dapat diambil dari indeks + 1
-                        final playerName = "Pemain ${index + 1}";
+                        final substitutes =
+                            data1.response?[0].substitutes?[index];
+                        final number = substitutes!.player!.number.toString();
+                        final playerName = substitutes.player!.name.toString();
                         return LineUpcomponent(
                             number: number,
                             name: playerName,
@@ -197,7 +200,8 @@ class LineUpAppState extends State<LineUp> {
     );
   }
 
-  Widget _buildBoxlineup2() {
+  Widget _buildBoxlineup2(data1) {
+    String formation = data1.response[1].formation; 
     return Visibility(
       visible: _showLineup2,
       child: Center(
@@ -206,7 +210,7 @@ class LineUpAppState extends State<LineUp> {
           child: Container(
             decoration: BoxDecoration(
               border: Border.all(
-                color: Colors.black,
+                color: flutter.Colors.black,
                 width: 2.0,
               ),
               color: const Color(0xFFF15A59),
@@ -216,14 +220,14 @@ class LineUpAppState extends State<LineUp> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Padding(
-                  padding: EdgeInsets.only(left: 10.0),
+                 Padding(
+                  padding: const EdgeInsets.only(left: 10.0),
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      "Formation",
-                      style: TextStyle(
-                        color: Colors.white,
+                      "Formation: $formation",
+                      style: const TextStyle(
+                        color: flutter.Colors.white,
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
                       ),
@@ -238,7 +242,7 @@ class LineUpAppState extends State<LineUp> {
                     child: Text(
                       "STARTING IX",
                       style: TextStyle(
-                        color: Colors.white,
+                        color: flutter.Colors.white,
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
@@ -249,13 +253,12 @@ class LineUpAppState extends State<LineUp> {
                   height:
                       280, // Tinggi sesuaikan agar tidak tumpang tindih dengan "SUBTITUTES"
                   child: ListView.builder(
-                    itemCount: 11,
+                    itemCount: data1.response?[1].startXi?.length ?? 0,
                     itemBuilder: (BuildContext context, int index) {
-                      final number = (index + 1).toString();
-                      final playerName = "Pemain ${index + 1}";
+                      final player = data1.response?[1].startXi?[index];
                       return LineUpcomponent(
-                        number: number,
-                        name: playerName,
+                        number: player!.player!.number.toString(),
+                        name: player.player!.name.toString(),
                         BackgroundColor: "",
                       );
                     },
@@ -269,7 +272,7 @@ class LineUpAppState extends State<LineUp> {
                     child: Text(
                       "SUBTITUTES",
                       style: TextStyle(
-                        color: Colors.white,
+                        color: flutter.Colors.white,
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
@@ -280,19 +283,17 @@ class LineUpAppState extends State<LineUp> {
                   height:
                       165, // Tinggi sesuaikan agar tidak tumpang tindih dengan "STARTING IX"
                   child: ListView.builder(
-                    itemCount: 7,
-                    itemBuilder: (BuildContext context, int index) {
-                      final number = (index + 1)
-                          .toString(); // Nomor dapat diambil dari indeks + 1
-                      final playerName = "Pemain ${index + 1}";
-                      final backgroundColor = Colors.white.toString();
-                      return LineUpcomponent(
-                        number: number,
-                        name: playerName,
-                        BackgroundColor: backgroundColor,
-                      );
-                    },
-                  ),
+                      itemCount: data1.response?[1].substitutes?.length ?? 0,
+                      itemBuilder: (BuildContext context, int index) {
+                        final substitutes =
+                            data1.response?[1].substitutes?[index];
+                        final number = substitutes!.player!.number.toString();
+                        final playerName = substitutes.player!.name.toString();
+                        return LineUpcomponent(
+                            number: number,
+                            name: playerName,
+                            BackgroundColor: "");
+                      }),
                 ),
               ],
             ),
@@ -316,7 +317,7 @@ class LineUpAppState extends State<LineUp> {
                 "NaSport",
                 style: TextStyle(
                   fontSize: 24,
-                  color: Colors.white,
+                  color: flutter.Colors.white,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -335,7 +336,7 @@ class LineUpAppState extends State<LineUp> {
                       );
                     },
                     icon: const Icon(Icons.arrow_back,
-                        color: Colors.white, size: 30),
+                        color: flutter.Colors.white, size: 30),
                   ),
                 ),
                 const Expanded(
@@ -344,7 +345,7 @@ class LineUpAppState extends State<LineUp> {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 22,
-                      color: Colors.white,
+                      color: flutter.Colors.white,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -365,30 +366,43 @@ class LineUpAppState extends State<LineUp> {
             _buildButtonRow(),
             const SizedBox(height: 20),
             LayoutBuilder(builder: (context, constraints) {
-              if (constraints.maxWidth > 1100) {
-                _showLineup1 = true;
-                _showLineup2 = true;
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(width: 500, child: _buildBoxlineup1()),
-                    const SizedBox(width: 10),
-                    SizedBox(width: 500, child: _buildBoxlineup2()),
-                  ],
-                );
-              } else {
-                return Column(
-                  children: [
-                    const SizedBox(height: 10),
-                    _buildButton(),
-                    const SizedBox(height: 10),
-                    _buildBoxlineup1(),
-                    // const SizedBox(height: 20),
-                    _buildBoxlineup2(),
-                  ],
-                );
-              }
-            })
+              return FutureBuilder<Lineuptim>(
+                future: getAllLineup(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator();
+                  } else if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  } else {
+                    Lineuptim data1 = snapshot.data!;
+                    // Lineuptim data2 = snapshot.data!;
+                    // print("data: $data1");
+                    if (constraints.maxWidth > 1100) {
+                      _showLineup1 = true;
+                      _showLineup2 = true;
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(width: 500, child: _buildBoxlineup1(data1)),
+                          const SizedBox(width: 10),
+                          SizedBox(width: 500, child: _buildBoxlineup2(data1)),
+                        ],
+                      );
+                    } else {
+                      return Column(
+                        children: [
+                          const SizedBox(height: 10),
+                          _buildButton(),
+                          const SizedBox(height: 10),
+                          _buildBoxlineup1(data1),
+                          _buildBoxlineup2(data1),
+                        ],
+                      );
+                    }
+                  }
+                },
+              );
+            }),
           ],
         ),
       ),
@@ -460,7 +474,7 @@ class LineUpAppState extends State<LineUp> {
         const Text(
           "Full Time",
           style: TextStyle(
-            color: Colors.white,
+            color: flutter.Colors.white,
             fontSize: 22,
             fontWeight: FontWeight.bold,
           ),
@@ -473,7 +487,7 @@ class LineUpAppState extends State<LineUp> {
             Text(
               "${widget.soccerMatchlineup.goal?.home}",
               style: const TextStyle(
-                color: Colors.white,
+                color: flutter.Colors.white,
                 fontSize: 45,
                 fontWeight: FontWeight.bold,
               ),
@@ -484,7 +498,7 @@ class LineUpAppState extends State<LineUp> {
             const Text(
               "-",
               style: TextStyle(
-                color: Colors.white,
+                color: flutter.Colors.white,
                 fontSize: 45,
                 fontWeight: FontWeight.bold,
               ),
@@ -495,7 +509,7 @@ class LineUpAppState extends State<LineUp> {
             Text(
               "${widget.soccerMatchlineup.goal?.away}",
               style: const TextStyle(
-                color: Colors.white,
+                color: flutter.Colors.white,
                 fontSize: 45,
                 fontWeight: FontWeight.bold,
               ),

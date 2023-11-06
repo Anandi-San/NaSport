@@ -18,7 +18,7 @@ class StatisticApi {
     };
 
     http.Response response = await http.get(uri, headers: headers);
-    print("Response status: ${response.statusCode}");
+    // print("Response status: ${response.statusCode}");
 
     if (response.statusCode == 200) {
       var body = json.decode(response.body);
