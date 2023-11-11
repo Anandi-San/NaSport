@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
 // import 'package:papb_aplication/data/model/Fixtures/fixture.dart';
-import 'package:papb_aplication/data/model/Fixturess/fixture.dart';
+// import 'package:papb_aplication/data/model/Fixturess/fixture.dart';
 import 'package:papb_aplication/data/model/klasmenttest/fixtures.dart';
 import 'package:papb_aplication/data/model/soccermodel.dart';
 import 'package:papb_aplication/data/source/api.manager.dart';
@@ -18,13 +19,43 @@ class Screennn extends StatefulWidget {
 
 class HomeScreenState extends State<Screennn> {
   final SoccerApi soccerApi = SoccerApi();
+  final TextEditingController searchController = TextEditingController();
+  List<SoccerMatch> allMatches = [];
+  final Duration debounceDuration = const Duration(milliseconds: 500);
+  Timer? _debounce;
+  bool showMatches = false;
+  Color tileColor = Colors.transparent;
 
+  @override
+  void initState() {
+    super.initState();
+    fetchAllMatches();
+  }
+
+  Future<void> fetchAllMatches() async {
+    List<SoccerMatch> matches = await soccerApi.getAllMatches();
+    setState(() {
+      allMatches = matches;
+    });
+  }
+
+  List<SoccerMatch> getFilteredMatches(String searchQuery) {
+    return allMatches.where((match) {
+      return match.home?.name
+              ?.toLowerCase()
+              .contains(searchQuery.toLowerCase()) ??
+          false ||
+              match.away!.name!
+                  .toLowerCase()
+                  .contains(searchQuery.toLowerCase());
+    }).toList();
+  }
 // List<SoccerMatchh>? matches;
 
-Future<List<SoccerMatch>> fetchData() async {
-  List<SoccerMatch> matches = await soccerApi.getAllMatches();
-  return matches;
-}
+  Future<List<SoccerMatch>> fetchData() async {
+    List<SoccerMatch> matches = await soccerApi.getAllMatches();
+    return matches;
+  }
 
   final StandingApi standingApi = StandingApi();
 
@@ -47,8 +78,8 @@ Future<List<SoccerMatch>> fetchData() async {
       backgroundColor: const Color(0xFFD21312),
       body: SingleChildScrollView(
         child: Padding(
-          padding:
-              EdgeInsets.symmetric(horizontal: screenWidth < 1000 ? 10 : 250, vertical: 35.0),
+          padding: EdgeInsets.symmetric(
+              horizontal: screenWidth < 1000 ? 10 : 250, vertical: 35.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -86,6 +117,16 @@ Future<List<SoccerMatch>> fetchData() async {
                 child: Padding(
                   padding: const EdgeInsets.only(top: 10),
                   child: TextField(
+                    controller: searchController,
+                    onChanged: (value) {
+                      if (_debounce?.isActive ?? false) _debounce?.cancel();
+                      _debounce = Timer(debounceDuration, () {
+                        setState(() {
+                          showMatches = true;
+                        });
+                      });
+                      showMatches = false;
+                    },
                     decoration: InputDecoration(
                       hintText: "Search Your Match",
                       filled: true,
@@ -102,6 +143,58 @@ Future<List<SoccerMatch>> fetchData() async {
                     ),
                   ),
                 ),
+              ),
+              if (showMatches)
+              Center(
+                child: ListView.builder(
+                    shrinkWrap: true,
+                    padding: const EdgeInsets.only(top: 10),
+                    itemCount: getFilteredMatches(searchController.text).length,
+                    itemBuilder: (context, index) {
+                      final match =
+                          getFilteredMatches(searchController.text)[index];
+                      return GestureDetector(
+                        onTapDown: (details) {
+                          setState(() {
+                            tileColor = Colors
+                                .white; // Atur warna latar belakang ke putih saat ditekan
+                          });
+                        },
+                        onTapUp: (details) {
+                          setState(() {
+                            tileColor = Colors
+                                .transparent; // Kembalikan warna latar belakang saat dilepaskan
+                          });
+                          // Navigasi ke halaman detail di sini
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => MatchDetailPage(
+                                soccerMatch: match,
+                                fixtureId: match.fixture?.id ?? 0,
+                                hometeamId: match.home?.id ?? 0,
+                                awayteamId: match.away?.id ?? 0,
+                              ),
+                            ),
+                          );
+                        },
+                        onTapCancel: () {
+                          setState(() {
+                            tileColor = Colors
+                                .transparent; // Kembalikan warna latar belakang jika interaksi dibatalkan
+                          });
+                        },
+                        child: Container(
+                          color:
+                              tileColor, // Gunakan variabel warna latar belakang
+                          child: ListTile(
+                            title: Text(match.home?.name ?? ''),
+                            subtitle: Text(match.away?.name ?? ''),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
               ),
               SizedBox(
                 height: 160,
@@ -127,18 +220,21 @@ Future<List<SoccerMatch>> fetchData() async {
                             itemBuilder: (context, index) {
                               return GestureDetector(
                                 onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => MatchDetailPage(
-                                          soccerMatch: matches[index],
-                                          fixtureId: matches[index].fixture?.id ?? 0,
-                                          hometeamId: matches[index].home?.id ?? 0,
-                                          awayteamId: matches[index].away?.id ?? 0,
-                                        ),
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => MatchDetailPage(
+                                        soccerMatch: matches[index],
+                                        fixtureId:
+                                            matches[index].fixture?.id ?? 0,
+                                        hometeamId:
+                                            matches[index].home?.id ?? 0,
+                                        awayteamId:
+                                            matches[index].away?.id ?? 0,
                                       ),
-                                    );
-                                    },
+                                    ),
+                                  );
+                                },
                                 child: Container(
                                   width: 150,
                                   height: 150,
@@ -166,7 +262,7 @@ Future<List<SoccerMatch>> fetchData() async {
                                             MainAxisAlignment.center,
                                         children: [
                                           Image.network(
-                                           "${matches[index].home?.logoUrl ?? 0}",
+                                            "${matches[index].home?.logoUrl ?? 0}",
                                             width: 45,
                                             height: 45,
                                           ),

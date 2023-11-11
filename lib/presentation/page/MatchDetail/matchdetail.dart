@@ -76,10 +76,9 @@ class MatchDetailState extends State<MatchDetailPage> {
                   padding: const EdgeInsets.only(left: 10.0),
                   child: IconButton(
                     onPressed: () {
-                      Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(
-                            builder: (context) => const Screennn()),
-                        (route) => false,
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const Screennn()),
                       );
                     },
                     icon: const Icon(Icons.arrow_back,

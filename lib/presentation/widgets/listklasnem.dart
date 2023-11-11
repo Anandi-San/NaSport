@@ -38,12 +38,9 @@ class ListKlasmen extends StatelessWidget {
               teamName: teamName,
             ),
           if (images == null)
-            Padding(
-              padding: const EdgeInsets.only(left: 10, right: 0, top: 0, bottom: 0),
-              child: Text(
-                teamName , // Tambahkan ?? '' untuk memberikan nilai default jika teamName adalah null atau kosong
-                style: const TextStyle(fontSize: 14, color: Colors.white),
-              ),
+            Text(
+              teamName , // Tambahkan ?? '' untuk memberikan nilai default jika teamName adalah null atau kosong
+              style: const TextStyle(fontSize: 14, color: Colors.white),
             ),
           const Spacer(),
           Row(
